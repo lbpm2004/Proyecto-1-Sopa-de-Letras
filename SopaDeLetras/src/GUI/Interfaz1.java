@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Interfaz;
+package GUI;
 
 /**
- *
- * @author Personal
+ * Descripción de la clase: 
+ * @authors Luis Peña, Luis Lovera y Diego Linares.
  */
 public class Interfaz1 extends javax.swing.JFrame {
 
@@ -14,9 +14,36 @@ public class Interfaz1 extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     public Interfaz1() {
+        
         initComponents();
     }
-
+    
+    /**
+     * Permite al usuario escoger un archivo y cargarlo. Después mostrará las palabras del diccionario en el "textArea#" y llamará al método GenerarTablero(). 
+     */
+    public void CargarArchivoTXT(){
+        
+    }
+    
+    /**
+     * 
+     */
+    public void GenerarTablero(){
+        
+    }
+    
+    /**
+     * 
+     */
+    public void GuardarDiccionario(){
+        
+    }
+    
+    
+    
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,24 +54,18 @@ public class Interfaz1 extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setResizable(false);
+        getContentPane().setLayout(null);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
+    
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -77,6 +98,7 @@ public class Interfaz1 extends javax.swing.JFrame {
             }
         });
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
