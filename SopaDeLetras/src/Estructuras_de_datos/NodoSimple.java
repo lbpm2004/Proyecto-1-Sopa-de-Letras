@@ -6,7 +6,7 @@ package Estructuras_de_datos;
 
 /**
  * @author Luis Peña
- * Descripción de la clase: Define un tipo de dato abstracto, constituido por un dato de tipo String y next (un apuntador a tipo de dato NodoSimple)
+ * Descripción de la clase: Define un tipo de dato abstracto, constituido por un dato de tipo String (palabra) y next (un apuntador a tipo de dato NodoSimple)
  */
 public class NodoSimple {
     private String dato;
