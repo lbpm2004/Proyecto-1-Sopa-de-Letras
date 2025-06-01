@@ -4,18 +4,53 @@
  */
 package GUI;
 
+import Estructuras_de_datos.ListaSimple;
+import javax.swing.JLabel;
+
 /**
- * Descripción de la clase: 
  * @authors Luis Peña, Luis Lovera y Diego Linares.
+ * Descripción de la clase: 
  */
 public class Interfaz1 extends javax.swing.JFrame {
-
+    private JLabel[][] tablero; //simula el tablero como una matriz de JLabels.
+    private ListaSimple diccionario; //Es una lista con las palabras del diccionario. 
     /**
      * Creates new form NewJFrame
      */
     public Interfaz1() {
         
         initComponents();
+        diccionario = new ListaSimple();
+        tablero = new JLabel[4][4];
+        char[] cadena = {'a','b','c','d','a','b','c','d','a','b','c','d','a','b','c','d'};
+        
+        
+        tablero[0][0] = Jlabel00;
+        tablero[0][1] = Jlabel01;
+        tablero[0][2] = Jlabel02;
+        tablero[0][3] = Jlabel03;
+        tablero[1][0] = Jlabel10;
+        tablero[1][1] = Jlabel11;
+        tablero[1][2] = Jlabel12;
+        tablero[1][3] = Jlabel13;
+        tablero[2][0] = Jlabel20;
+        tablero[2][1] = Jlabel21;
+        tablero[2][2] = Jlabel22;
+        tablero[2][3] = Jlabel23;
+        tablero[3][0] = Jlabel30;
+        tablero[3][1] = Jlabel31;
+        tablero[3][2] = Jlabel32;
+        tablero[3][3] = Jlabel33;
+        
+        int k = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                tablero[i][j].setText(String.valueOf(cadena[k]));
+                k++;
+            }
+            
+            
+        }
     }
     
     /**
@@ -59,33 +94,34 @@ public class Interfaz1 extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
-        jButton14 = new javax.swing.JButton();
-        jButton15 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
-        jButton17 = new javax.swing.JButton();
+        cargar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jButton18 = new javax.swing.JButton();
+        busquedaA = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jButton19 = new javax.swing.JButton();
+        busquedaE = new javax.swing.JButton();
         jButton20 = new javax.swing.JButton();
+        reiniciar = new javax.swing.JButton();
+        Jlabel03 = new javax.swing.JLabel();
+        Jlabel00 = new javax.swing.JLabel();
+        Jlabel01 = new javax.swing.JLabel();
+        Jlabel02 = new javax.swing.JLabel();
+        Jlabel13 = new javax.swing.JLabel();
+        Jlabel10 = new javax.swing.JLabel();
+        Jlabel11 = new javax.swing.JLabel();
+        Jlabel12 = new javax.swing.JLabel();
+        Jlabel23 = new javax.swing.JLabel();
+        Jlabel20 = new javax.swing.JLabel();
+        Jlabel21 = new javax.swing.JLabel();
+        Jlabel22 = new javax.swing.JLabel();
+        Jlabel33 = new javax.swing.JLabel();
+        Jlabel30 = new javax.swing.JLabel();
+        Jlabel31 = new javax.swing.JLabel();
+        Jlabel32 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -107,89 +143,25 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Diccionario");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(160, 150, 150, 25);
+        jLabel2.setBounds(160, 140, 150, 25);
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(70, 190, 330, 210);
+        jScrollPane1.setBounds(70, 170, 330, 230);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Tablero");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(740, 150, 80, 25);
+        jLabel3.setBounds(680, 140, 80, 25);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Cargar archivo");
-        getContentPane().add(jButton1);
-        jButton1.setBounds(550, 90, 160, 30);
-
-        jButton2.setText("jButton2");
-        getContentPane().add(jButton2);
-        jButton2.setBounds(580, 190, 100, 50);
-
-        jButton3.setText("jButton3");
-        getContentPane().add(jButton3);
-        jButton3.setBounds(680, 190, 100, 50);
-
-        jButton4.setText("jButton4");
-        getContentPane().add(jButton4);
-        jButton4.setBounds(780, 190, 100, 50);
-
-        jButton5.setText("jButton5");
-        getContentPane().add(jButton5);
-        jButton5.setBounds(880, 190, 100, 50);
-
-        jButton6.setText("jButton6");
-        getContentPane().add(jButton6);
-        jButton6.setBounds(580, 240, 100, 50);
-
-        jButton7.setText("jButton7");
-        getContentPane().add(jButton7);
-        jButton7.setBounds(680, 240, 100, 50);
-
-        jButton8.setText("jButton8");
-        getContentPane().add(jButton8);
-        jButton8.setBounds(780, 240, 100, 50);
-
-        jButton9.setText("jButton9");
-        getContentPane().add(jButton9);
-        jButton9.setBounds(880, 240, 100, 50);
-
-        jButton10.setText("jButton10");
-        getContentPane().add(jButton10);
-        jButton10.setBounds(580, 290, 100, 50);
-
-        jButton11.setText("jButton11");
-        getContentPane().add(jButton11);
-        jButton11.setBounds(680, 290, 100, 50);
-
-        jButton12.setText("jButton12");
-        getContentPane().add(jButton12);
-        jButton12.setBounds(780, 290, 100, 50);
-
-        jButton13.setText("jButton13");
-        getContentPane().add(jButton13);
-        jButton13.setBounds(880, 290, 100, 50);
-
-        jButton14.setText("jButton14");
-        getContentPane().add(jButton14);
-        jButton14.setBounds(580, 340, 100, 50);
-
-        jButton15.setText("jButton15");
-        getContentPane().add(jButton15);
-        jButton15.setBounds(680, 340, 100, 50);
-
-        jButton16.setText("jButton16");
-        getContentPane().add(jButton16);
-        jButton16.setBounds(780, 340, 100, 50);
-
-        jButton17.setText("jButton17");
-        getContentPane().add(jButton17);
-        jButton17.setBounds(880, 340, 100, 50);
+        cargar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cargar.setText("Cargar archivo");
+        getContentPane().add(cargar);
+        cargar.setBounds(550, 90, 160, 30);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -197,15 +169,15 @@ public class Interfaz1 extends javax.swing.JFrame {
         getContentPane().add(jLabel4);
         jLabel4.setBounds(20, 420, 750, 25);
 
-        jButton18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton18.setText("Búsqueda automática");
-        jButton18.addActionListener(new java.awt.event.ActionListener() {
+        busquedaA.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        busquedaA.setText("Búsqueda automática");
+        busquedaA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton18ActionPerformed(evt);
+                busquedaAActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton18);
-        jButton18.setBounds(120, 460, 190, 40);
+        getContentPane().add(busquedaA);
+        busquedaA.setBounds(120, 460, 190, 40);
 
         jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "BFS", "DFS" }));
@@ -231,8 +203,8 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel5.setBounds(330, 560, 400, 25);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Rellene el campo vacío con la palabra que desea buscar en el tablero y presione el botón:");
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel6.setText("Rellene el campo vacío con la palabra que desea buscar en el tablero:");
         getContentPane().add(jLabel6);
         jLabel6.setBounds(20, 670, 730, 25);
 
@@ -244,22 +216,134 @@ public class Interfaz1 extends javax.swing.JFrame {
         getContentPane().add(jTextField1);
         jTextField1.setBounds(30, 710, 250, 40);
 
-        jButton19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton19.setText("Buscar palabra");
-        getContentPane().add(jButton19);
-        jButton19.setBounds(300, 710, 160, 40);
+        busquedaE.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        busquedaE.setText("Buscar palabra");
+        busquedaE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                busquedaEActionPerformed(evt);
+            }
+        });
+        getContentPane().add(busquedaE);
+        busquedaE.setBounds(300, 710, 160, 40);
 
         jButton20.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jButton20.setText("Guardar Diccionario");
         getContentPane().add(jButton20);
         jButton20.setBounds(30, 790, 190, 60);
 
+        reiniciar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        reiniciar.setText("Reiniciar");
+        reiniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reiniciarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(reiniciar);
+        reiniciar.setBounds(820, 790, 180, 60);
+
+        Jlabel03.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel03.setText("03");
+        Jlabel03.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel03);
+        Jlabel03.setBounds(810, 170, 80, 50);
+
+        Jlabel00.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel00.setText("00");
+        Jlabel00.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel00);
+        Jlabel00.setBounds(540, 170, 80, 50);
+
+        Jlabel01.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel01.setText("01");
+        Jlabel01.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel01);
+        Jlabel01.setBounds(630, 170, 80, 50);
+
+        Jlabel02.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel02.setText("02");
+        Jlabel02.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel02);
+        Jlabel02.setBounds(720, 170, 80, 50);
+
+        Jlabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel13.setText("13");
+        Jlabel13.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel13);
+        Jlabel13.setBounds(810, 230, 80, 50);
+
+        Jlabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel10.setText("10");
+        Jlabel10.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel10);
+        Jlabel10.setBounds(540, 230, 80, 50);
+
+        Jlabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel11.setText("11");
+        Jlabel11.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel11);
+        Jlabel11.setBounds(630, 230, 80, 50);
+
+        Jlabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel12.setText("12");
+        Jlabel12.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel12);
+        Jlabel12.setBounds(720, 230, 80, 50);
+
+        Jlabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel23.setText("23");
+        Jlabel23.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel23);
+        Jlabel23.setBounds(810, 290, 80, 50);
+
+        Jlabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel20.setText("20");
+        Jlabel20.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel20);
+        Jlabel20.setBounds(540, 290, 80, 50);
+
+        Jlabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel21.setText("21");
+        Jlabel21.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel21);
+        Jlabel21.setBounds(630, 290, 80, 50);
+
+        Jlabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel22.setText("22");
+        Jlabel22.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel22);
+        Jlabel22.setBounds(720, 290, 80, 50);
+
+        Jlabel33.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel33.setText("33");
+        Jlabel33.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel33);
+        Jlabel33.setBounds(810, 350, 80, 50);
+
+        Jlabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel30.setText("30");
+        Jlabel30.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel30);
+        Jlabel30.setBounds(540, 350, 80, 50);
+
+        Jlabel31.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel31.setText("31");
+        Jlabel31.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel31);
+        Jlabel31.setBounds(630, 350, 80, 50);
+
+        Jlabel32.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Jlabel32.setText("32");
+        Jlabel32.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        getContentPane().add(Jlabel32);
+        Jlabel32.setBounds(720, 350, 80, 50);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
+    private void busquedaAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaAActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton18ActionPerformed
+        //Búsqueda automática hecha por el método de búsqueda seleccionado 
+    }//GEN-LAST:event_busquedaAActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
@@ -268,6 +352,16 @@ public class Interfaz1 extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void reiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reiniciarActionPerformed
+        // TODO add your handling code here:
+        //Reinicia los atributos y JTextField para empezar de nuevo sin necesidad de cerrrar y abrir la interfaz nuevamente. 
+    }//GEN-LAST:event_reiniciarActionPerformed
+
+    private void busquedaEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaEActionPerformed
+        // TODO add your handling code here:
+        //Búsqueda específica hecha siempre con el método de búsqueda BFS
+    }//GEN-LAST:event_busquedaEActionPerformed
 
 
     
@@ -310,26 +404,26 @@ public class Interfaz1 extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
-    private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel Jlabel00;
+    private javax.swing.JLabel Jlabel01;
+    private javax.swing.JLabel Jlabel02;
+    private javax.swing.JLabel Jlabel03;
+    private javax.swing.JLabel Jlabel10;
+    private javax.swing.JLabel Jlabel11;
+    private javax.swing.JLabel Jlabel12;
+    private javax.swing.JLabel Jlabel13;
+    private javax.swing.JLabel Jlabel20;
+    private javax.swing.JLabel Jlabel21;
+    private javax.swing.JLabel Jlabel22;
+    private javax.swing.JLabel Jlabel23;
+    private javax.swing.JLabel Jlabel30;
+    private javax.swing.JLabel Jlabel31;
+    private javax.swing.JLabel Jlabel32;
+    private javax.swing.JLabel Jlabel33;
+    private javax.swing.JButton busquedaA;
+    private javax.swing.JButton busquedaE;
+    private javax.swing.JButton cargar;
     private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -342,6 +436,7 @@ public class Interfaz1 extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton reiniciar;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

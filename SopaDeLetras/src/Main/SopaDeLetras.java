@@ -19,10 +19,9 @@ public class SopaDeLetras {
         // TODO code application logic here
         Interfaz1 interfaz1 = new Interfaz1();
         interfaz1.setTitle("Proyecto 1 de EDD");
-        interfaz1.setSize(1100, 900);
+        interfaz1.setSize(1040, 900);
         interfaz1.setLocationRelativeTo(null); //método para que la interfaz apareczcs en el centro de la pantalla
         interfaz1.setVisible(true);
-        
         
     }
 }
