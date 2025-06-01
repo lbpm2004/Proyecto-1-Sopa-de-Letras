@@ -22,8 +22,6 @@ public class Interfaz1 extends javax.swing.JFrame {
         initComponents();
         diccionario = new ListaSimple();
         tablero = new JLabel[4][4];
-        char[] cadena = {'a','b','c','d','a','b','c','d','a','b','c','d','a','b','c','d'};
-        
         
         tablero[0][0] = Jlabel00;
         tablero[0][1] = Jlabel01;
@@ -42,15 +40,16 @@ public class Interfaz1 extends javax.swing.JFrame {
         tablero[3][2] = Jlabel32;
         tablero[3][3] = Jlabel33;
         
+        /* Código para probar el correcto funcionamiento del tablero.
+        char[] cadena = {'a','b','c','d','a','b','c','d','a','b','c','d','a','b','c','d'};
+        
         int k = 0;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 tablero[i][j].setText(String.valueOf(cadena[k]));
                 k++;
-            }
-            
-            
-        }
+            }    
+        }*/
     }
     
     /**

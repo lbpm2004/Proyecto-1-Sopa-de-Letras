@@ -6,7 +6,7 @@ package Estructuras_de_datos;
 
 /**
  * @author Luis Peña
- * Descripción de la clase:
+ * Descripción de la clase: Lista simplemente enlazada que almacena datos de tipo NodoSimple.
  */
 public class ListaSimple {
     private NodoSimple first;
