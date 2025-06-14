@@ -6,6 +6,13 @@ package GUI;
 
 import Estructuras_de_datos.ListaSimple;
 import javax.swing.JLabel;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * @authors Luis Peña, Luis Lovera y Diego Linares.
@@ -13,7 +20,9 @@ import javax.swing.JLabel;
  */
 public class Interfaz1 extends javax.swing.JFrame {
     private JLabel[][] tablero; //simula el tablero como una matriz de JLabels.
-    private ListaSimple diccionario; //Es una lista con las palabras del diccionario. 
+    private ListaSimple diccionario; //Es una lista con las palabras del diccionario.
+    private char[][] tableroLetras;
+    private javax.swing.JTextArea textAreaDic; 
     /**
      * Creates new form NewJFrame
      */
@@ -22,6 +31,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         initComponents();
         diccionario = new ListaSimple();
         tablero = new JLabel[4][4];
+        tableroLetras = new char[4][4];
         
         tablero[0][0] = Jlabel00;
         tablero[0][1] = Jlabel01;
@@ -55,8 +65,110 @@ public class Interfaz1 extends javax.swing.JFrame {
     /**
      * Permite al usuario escoger un archivo y cargarlo. Después mostrará las palabras del diccionario en el "textArea#" y llamará al método GenerarTablero(). 
      */
-    public void CargarArchivoTXT(){
-        
+    public void CargarArchivoTXT() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto (*.txt)", "txt"));
+
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+
+            // Limpiar el tablero visual y de datos antes de cargar
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    tableroLetras[i][j] = '\u0000'; // Resetear datos
+                    tablero[i][j].setText("");     // Limpiar JLabels
+                }
+            }
+private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {                                               
+
+        boolean success = App.sendFilePath(path.getText());
+
+        if (success) {
+            this.setVisible(false);
+            Menu mainMenu = new Menu();
+            mainMenu.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: verifica que tu archivo "
+                    + "no está vacío o la ruta es correcta, además de contener la estructura correcta");
+        }
+    }                                              
+
+    private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {                                               
+
+        boolean success = App.sendFilePath(path.getText());
+
+        if (success) {
+            this.setVisible(false);
+            Menu mainMenu = new Menu();
+            mainMenu.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: verifica que tu archivo "
+                    + "no está vacío o la ruta es correcta, además de contener la estructura correcta");
+        }
+    }                                              
+
+    private void pathActionPerformed(java.awt.event.ActionEvent evt) {                                     
+        continueButtonActionPerformed(evt);
+    }                                    
+
+    private void fileChooseActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        JFileChooser jf = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivo de Texto (.txt)", "txt");
+        jf.setAcceptAllFileFilterUsed(false);
+        jf.addChoosableFileFilter(filter);
+
+        result = jf.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            chosenFile = jf.getSelectedFile();
+            path.setText(chosenFile.getAbsolutePath());
+        }
+    }
+            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+                String line = br.readLine(); // Leer solo la primera línea
+                
+                // Validar que la línea no sea nula y que contenga contenido
+                if (line == null || line.trim().isEmpty()) {
+                    throw new IOException("El archivo está vacío o la primera línea está vacía.");
+                }
+
+                String[] letters = line.trim().toUpperCase().split(","); // Dividir por comas, convertir a mayúsculas
+                
+                // Validar que sean exactamente 16 elementos
+                if (letters.length != 16) {
+                    throw new IOException("El archivo no contiene exactamente 16 letras separadas por comas en la primera línea.");
+                }
+
+                // Cargar las letras en el array de tableroLetras
+                int k = 0;
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        // Asegurarse de que cada elemento tiene al menos un caracter
+                        if (letters[k].trim().isEmpty()) {
+                             throw new IOException("El elemento en la posición " + (k + 1) + " está vacío.");
+                        }
+                        tableroLetras[i][j] = letters[k].trim().charAt(0);
+                        k++;
+                    }
+                }
+
+                // Si todo fue bien, actualizar el tablero visual
+                GenerarTablero();
+                JOptionPane.showMessageDialog(this, "Tablero cargado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (IOException ex) {
+                // Manejo de errores de lectura o formato
+                JOptionPane.showMessageDialog(this, "Error al cargar el tablero: " + ex.getMessage(), "Error de Formato", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            } catch (Exception ex) {
+                // Captura cualquier otro error inesperado
+                JOptionPane.showMessageDialog(this, "Error inesperado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
+        }
     }
     
     /**
@@ -159,6 +271,11 @@ public class Interfaz1 extends javax.swing.JFrame {
 
         cargar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         cargar.setText("Cargar archivo");
+        cargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cargarActionPerformed(evt);
+            }
+        });
         getContentPane().add(cargar);
         cargar.setBounds(550, 90, 160, 30);
 
@@ -361,6 +478,11 @@ public class Interfaz1 extends javax.swing.JFrame {
         // TODO add your handling code here:
         //Búsqueda específica hecha siempre con el método de búsqueda BFS
     }//GEN-LAST:event_busquedaEActionPerformed
+
+    private void cargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarActionPerformed
+        // TODO add your handling code here:
+        CargarArchivoTXT();
+    }//GEN-LAST:event_cargarActionPerformed
 
 
     
