@@ -81,72 +81,20 @@ public class Interfaz1 extends javax.swing.JFrame {
                     tablero[i][j].setText("");     // Limpiar JLabels
                 }
             }
-private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {                                               
 
-        boolean success = App.sendFilePath(path.getText());
-
-        if (success) {
-            this.setVisible(false);
-            Menu mainMenu = new Menu();
-            mainMenu.setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: verifica que tu archivo "
-                    + "no está vacío o la ruta es correcta, además de contener la estructura correcta");
-        }
-    }                                              
-
-    private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {                                               
-
-        boolean success = App.sendFilePath(path.getText());
-
-        if (success) {
-            this.setVisible(false);
-            Menu mainMenu = new Menu();
-            mainMenu.setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: verifica que tu archivo "
-                    + "no está vacío o la ruta es correcta, además de contener la estructura correcta");
-        }
-    }                                              
-
-    private void pathActionPerformed(java.awt.event.ActionEvent evt) {                                     
-        continueButtonActionPerformed(evt);
-    }                                    
-
-    private void fileChooseActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        JFileChooser jf = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivo de Texto (.txt)", "txt");
-        jf.setAcceptAllFileFilterUsed(false);
-        jf.addChoosableFileFilter(filter);
-
-        result = jf.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            chosenFile = jf.getSelectedFile();
-            path.setText(chosenFile.getAbsolutePath());
-        }
-    }
-            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
-                String line = br.readLine(); // Leer solo la primera línea
-                
-                // Validar que la línea no sea nula y que contenga contenido
-                if (line == null || line.trim().isEmpty()) {
-                    throw new IOException("El archivo está vacío o la primera línea está vacía.");
-                }
-
-                String[] letters = line.trim().toUpperCase().split(","); // Dividir por comas, convertir a mayúsculas
+            try (BufferedReader text = new BufferedReader(new FileReader(selectedFile))) {
+                String line = text.readLine();
+                String[] letters = line.trim().toUpperCase().split(",");
                 
                 // Validar que sean exactamente 16 elementos
                 if (letters.length != 16) {
-                    throw new IOException("El archivo no contiene exactamente 16 letras separadas por comas en la primera línea.");
+                    throw new IOException("El archivo no ccumple con los requerimientos de la sopa.");
                 }
 
                 // Cargar las letras en el array de tableroLetras
                 int k = 0;
                 for (int i = 0; i < 4; i++) {
                     for (int j = 0; j < 4; j++) {
-                        // Asegurarse de que cada elemento tiene al menos un caracter
                         if (letters[k].trim().isEmpty()) {
                              throw new IOException("El elemento en la posición " + (k + 1) + " está vacío.");
                         }
@@ -155,17 +103,11 @@ private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {
                     }
                 }
 
-                // Si todo fue bien, actualizar el tablero visual
                 GenerarTablero();
                 JOptionPane.showMessageDialog(this, "Tablero cargado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-            } catch (IOException ex) {
-                // Manejo de errores de lectura o formato
-                JOptionPane.showMessageDialog(this, "Error al cargar el tablero: " + ex.getMessage(), "Error de Formato", JOptionPane.ERROR_MESSAGE);
-                ex.printStackTrace();
+                
             } catch (Exception ex) {
-                // Captura cualquier otro error inesperado
-                JOptionPane.showMessageDialog(this, "Error inesperado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
         }
