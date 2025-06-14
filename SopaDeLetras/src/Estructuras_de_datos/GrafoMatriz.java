@@ -11,9 +11,9 @@ package Estructuras_de_datos;
 public class GrafoMatriz {
     private char[][] celdaTablero; //matriz 4 filas x 4 columnas
     private boolean[][] matrizAdyacencia; // matriz 16x16, demuestra si es adyacente o no
-    private static final int N_VERTICES = 16; //Numero de vertices del grafo
-    private static final int N_FILAS=4;
-    private static final int N_COLUMNAS=4;
+    public static final int N_VERTICES = 16; //Numero de vertices del grafo
+    public static final int N_FILAS=4;
+    public static final int N_COLUMNAS=4;
     
 
     public GrafoMatriz(char[][] tablero) {
