@@ -5,11 +5,9 @@
 package GUI;
 
 import Estructuras_de_datos.ListaSimple;
+import Estructuras_de_datos.ProcesadorArchivo;
 import javax.swing.JLabel;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -22,13 +20,16 @@ public class Interfaz1 extends javax.swing.JFrame {
     private JLabel[][] tablero; //simula el tablero como una matriz de JLabels.
     private ListaSimple diccionario; //Es una lista con las palabras del diccionario.
     private char[][] tableroLetras;
-    private javax.swing.JTextArea textAreaDic; 
+    private javax.swing.JTextArea textAreaDic;
+    private ProcesadorArchivo procesador;
+    
     /**
      * Creates new form NewJFrame
      */
     public Interfaz1() {
         
         initComponents();
+        procesador = new ProcesadorArchivo();
         diccionario = new ListaSimple();
         tablero = new JLabel[4][4];
         tableroLetras = new char[4][4];
@@ -73,51 +74,29 @@ public class Interfaz1 extends javax.swing.JFrame {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-
-            // Limpiar el tablero visual y de datos antes de cargar
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    tableroLetras[i][j] = '\u0000'; // Resetear datos
-                    tablero[i][j].setText("");     // Limpiar JLabels
-                }
+            String contenido = procesador.leerArchivo(selectedFile);
+            if (contenido==null){
+                return;
             }
-
-            try (BufferedReader text = new BufferedReader(new FileReader(selectedFile))) {
-                String line = text.readLine();
-                String[] letters = line.trim().toUpperCase().split(",");
-                
-                // Validar que sean exactamente 16 elementos
-                if (letters.length != 16) {
-                    throw new IOException("El archivo no ccumple con los requerimientos de la sopa.");
-                }
-
-                // Cargar las letras en el array de tableroLetras
-                int k = 0;
-                for (int i = 0; i < 4; i++) {
-                    for (int j = 0; j < 4; j++) {
-                        if (letters[k].trim().isEmpty()) {
-                             throw new IOException("El elemento en la posición " + (k + 1) + " está vacío.");
-                        }
-                        tableroLetras[i][j] = letters[k].trim().charAt(0);
-                        k++;
-                    }
-                }
-
+            
+            /* revisar esto por ajustes!!!
+            if (resultado.mensajeError != null) {
+                JOptionPane.showMessageDialog(this, resultado.mensajeError, "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                this.diccionario = resultado.diccionario;
+                this.tableroLetras = resultado.tableroLetras;
                 GenerarTablero();
-                JOptionPane.showMessageDialog(this, "Tablero cargado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Tablero y diccionario cargados exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             }
+            */
+            
         }
     }
-    
+            
     /**
      * 
      */
     public void GenerarTablero(){
-        
     }
     
     /**
