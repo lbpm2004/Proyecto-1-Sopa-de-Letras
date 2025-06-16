@@ -6,6 +6,7 @@ package GUI;
 
 import Estructuras_de_datos.ListaSimple;
 import Estructuras_de_datos.ProcesadorArchivo;
+import Estructuras_de_datos.GrafoMatriz;
 import javax.swing.JLabel;
 import java.io.File;
 import javax.swing.JFileChooser;
@@ -17,10 +18,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * Descripción de la clase: 
  */
 public class Interfaz1 extends javax.swing.JFrame {
-    private JLabel[][] tablero; //simula el tablero como una matriz de JLabels.
-    private ListaSimple diccionario; //Es una lista con las palabras del diccionario.
-    private char[][] tableroLetras;
+    private JLabel[][] tablero; //simula el tablero como una matriz de JLabels
     private ProcesadorArchivo procesador;
+    private GrafoMatriz grafo;
+
     
     /**
      * Creates new form NewJFrame
@@ -29,9 +30,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         
         initComponents();
         procesador = new ProcesadorArchivo();
-        diccionario = new ListaSimple();
         tablero = new JLabel[4][4];
-        tableroLetras = new char[4][4];
         
         tablero[0][0] = Jlabel00;
         tablero[0][1] = Jlabel01;
@@ -81,30 +80,9 @@ public class Interfaz1 extends javax.swing.JFrame {
                     return;   
                 }
              
-                String contenido = procesador.leerArchivo(archivoSeleccionado);
-                if (contenido==null){
-                    return;
-                }
-                
-                String[] lineas=procesador.adaptadorArchivo(contenido);
-                
-                if (procesador.validarEstructura(lineas)==true){
-                    if (procesador.validarDiccionario(lineas)==true){
-                        if(procesador.validarLetras(lineas)==true){
-                            procesador.agregarDiccionario(lineas);
-                            procesador.generarTablero(lineas);
-                            
-                            MostrarTablero();
-                            MostrarDiccionario();
-                            JOptionPane.showMessageDialog(this, "Tablero y diccionario cargados exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                        }else{
-                            return;
-                        }
-                    }else{
-                        return;
-                    }
-                }else{
-                    return;
+                if (procesador.procesarArchivo(archivoSeleccionado)==true) {
+                    MostrarTablero();
+                    MostrarDiccionario();
                 }
             }
         }catch (Exception e){
@@ -130,16 +108,8 @@ public class Interfaz1 extends javax.swing.JFrame {
      * 
      */
     public void MostrarDiccionario(){
-        try{
-            verDiccionario.setText(procesador.getDiccionario().mostrarLista());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al mostrar el diccionario.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        verDiccionario.setText(procesador.getDiccionario().mostrarLista());
     }
-    
-    
-    
-
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -460,11 +430,15 @@ public class Interfaz1 extends javax.swing.JFrame {
 
     private void cargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarActionPerformed
         // TODO add your handling code here:
-        CargarArchivoTXT();
+        try{
+            CargarArchivoTXT();
+            grafo = new GrafoMatriz(procesador.getTableroLetras());
+            grafo.construirGrafo();
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Error:" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }   
     }//GEN-LAST:event_cargarActionPerformed
-
-
-    
+ 
     /**
      * @param args the command line arguments
      */
