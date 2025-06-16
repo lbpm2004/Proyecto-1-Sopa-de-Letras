@@ -117,7 +117,7 @@ public class ProcesadorArchivo {
         return true;
     }
     
-    public void agregarDiccionario (String [] lineas){
+    public void generarDiccionario (String [] lineas){
         for (int i = 1; i < indiceDicFin; i++) {
             diccionario.insertarAlFinal(lineas[i].toUpperCase());
         }
@@ -167,11 +167,31 @@ public class ProcesadorArchivo {
         }
     }
     
-    public void limpiar(){
-        //terminar
+    public boolean procesarArchivo(File archivoSeleccionado) {
+        String contenido = leerArchivo(archivoSeleccionado);
+        if (contenido == null){
+            return false;
+        }
+        
+        String[] lineas = adaptadorArchivo(contenido);
+        
+        if (validarEstructura(lineas)==true){
+            if (validarDiccionario(lineas)==true){
+                if(validarLetras(lineas)==true){
+                    generarDiccionario(lineas);
+                    generarTablero(lineas);
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+                    }
+        }else{
+            return false;
+        }
+        return true;
     }
-    
-    
+     
     public ListaSimple getDiccionario() {
         return diccionario;
     }
