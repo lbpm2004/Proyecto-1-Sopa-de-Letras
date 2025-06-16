@@ -19,14 +19,20 @@ public class ListaSimple {
         this.tamaño = 0;
     }
     
-    public boolean EsVacia(){
+    public boolean esVacia(){
         return first == null;
     }
     
-    public void InsertarAlFinal(String newDato){
+    public void vaciar(){
+        first=null;
+        last=null;
+        tamaño=0;
+    }
+    
+    public void insertarAlFinal(String newDato){
         NodoSimple aux = new NodoSimple(newDato);
         
-        if(this.EsVacia()){
+        if(this.esVacia()){
             first = last = aux;
         }else{
             last.setNext(aux);
@@ -34,6 +40,16 @@ public class ListaSimple {
         }
         tamaño++;        
     }
+    
+    public String mostrarLista(){
+        String cadena="";
+        NodoSimple aux=first;
+        while (aux!=null){
+            cadena=cadena+aux.getDato()+"\n";
+            aux=aux.getNext();
+        }
+        return cadena;
+    } 
 
     public NodoSimple getFirst() {
         return first;

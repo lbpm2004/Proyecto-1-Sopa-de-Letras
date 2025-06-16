@@ -7,7 +7,6 @@ package Estructuras_de_datos;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 
 /**
@@ -44,7 +43,7 @@ public class ProcesadorArchivo {
             }
             br.close();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo. Intenta de nuevo","Error",JOptionPane.ERROR_MESSAGE);
         }
         return contenido;
     }
@@ -120,7 +119,7 @@ public class ProcesadorArchivo {
     
     public void agregarDiccionario (String [] lineas){
         for (int i = 1; i < indiceDicFin; i++) {
-            diccionario.InsertarAlFinal(lineas[i].toUpperCase());
+            diccionario.insertarAlFinal(lineas[i].toUpperCase());
         }
     }
     
@@ -156,7 +155,8 @@ public class ProcesadorArchivo {
         return true;
     }
     
-    public void generarTablero (String[] letras){
+    public void generarTablero (String[] lineas){
+        String[] letras=lineas[indiceDicFin+2].split(",");
         int identificador=0;
         for (int i = 0; i < tableroLetras.length; i++) {
             for (int j = 0; j < tableroLetras.length; j++) {
@@ -166,6 +166,11 @@ public class ProcesadorArchivo {
             
         }
     }
+    
+    public void limpiar(){
+        //terminar
+    }
+    
     
     public ListaSimple getDiccionario() {
         return diccionario;
