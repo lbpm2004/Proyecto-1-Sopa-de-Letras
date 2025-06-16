@@ -73,8 +73,14 @@ public class Interfaz1 extends javax.swing.JFrame {
         int result = fileChooser.showOpenDialog(this);
 
         if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            String contenido = procesador.leerArchivo(selectedFile);
+            File archivoSeleccionado = fileChooser.getSelectedFile();
+            
+            if (archivoSeleccionado==null){
+                JOptionPane.showMessageDialog(null, "No seleccionaste ningún archivo.","Error",JOptionPane.ERROR_MESSAGE);
+                return;   
+            }
+           
+            String contenido = procesador.leerArchivo(archivoSeleccionado);
             if (contenido==null){
                 return;
             }
@@ -124,7 +130,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        palabrasDiccionario = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
         cargar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -175,11 +181,11 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Diccionario");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(160, 140, 150, 25);
+        jLabel2.setBounds(160, 140, 150, 22);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        palabrasDiccionario.setColumns(20);
+        palabrasDiccionario.setRows(5);
+        jScrollPane1.setViewportView(palabrasDiccionario);
 
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(70, 170, 330, 230);
@@ -188,7 +194,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Tablero");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(680, 140, 80, 25);
+        jLabel3.setBounds(680, 140, 80, 22);
 
         cargar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         cargar.setText("Cargar archivo");
@@ -204,7 +210,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Seleccionar método de búsqueda y presionar el botón para buscar palabras del diccionario:");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(20, 420, 750, 25);
+        jLabel4.setBounds(20, 420, 750, 22);
 
         busquedaA.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         busquedaA.setText("Búsqueda automática");
@@ -237,13 +243,13 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("El tiempo total de búsqueda fue de X segundos");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(330, 560, 400, 25);
+        jLabel5.setBounds(330, 560, 400, 22);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel6.setText("Rellene el campo vacío con la palabra que desea buscar en el tablero:");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(20, 670, 730, 25);
+        jLabel6.setBounds(20, 670, 730, 22);
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -475,9 +481,9 @@ public class Interfaz1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextArea palabrasDiccionario;
     private javax.swing.JButton reiniciar;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables

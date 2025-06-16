@@ -17,13 +17,14 @@ import javax.swing.JOptionPane;
 public class ProcesadorArchivo {
     private ListaSimple diccionario;
     private char[][] tableroLetras;
+    private int indiceDicFin;
     
 
     public ProcesadorArchivo() {
         this.diccionario = new ListaSimple();
         this.tableroLetras = new char[4][4];
+        this.indiceDicFin = -1;
     }
-   
     
     public String leerArchivo(File archivoSeleccionado) {
         String contenido = "";
@@ -34,11 +35,11 @@ public class ProcesadorArchivo {
             }
             FileReader fr = new FileReader(archivoSeleccionado);
             BufferedReader br = new BufferedReader(fr);
-            String line;
+            String linea;
 
-            while ((line = br.readLine()) != null) {
-                if (!line.trim().isEmpty()) {  //Ignorar líneas vacías
-                    contenido += line + "\n";
+            while ((linea = br.readLine()) != null) {
+                if (!linea.trim().isEmpty()) {  //Ignorar líneas vacías
+                    contenido += linea.trim() + "\n";
                 }
             }
             br.close();
@@ -48,20 +49,21 @@ public class ProcesadorArchivo {
         return contenido;
     }
     
-    public boolean validarEstructura(String contenido){
-        String[] lineas = contenido.split("\n");
+    public String[] adaptadorArchivo (String contenido){
+        return contenido.split("\n");
+    }
     
+    public boolean validarEstructura(String[] lineas){
+  
         //1. Validar existencia de "dic"
         
         if (!lineas[0].equals("dic")){
             JOptionPane.showMessageDialog(null, "El archivo no cumple con la estructura adecuada. Este debe iniciar con 'dic'. ", "Error",JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        
+ 
         //2. Validar existencia de "/dic"
-       
-        int indiceDicFin=-1;
-        
+               
         for (int i = 1; i < lineas.length; i++) {
             if (lineas[i].equals("/dic")){
                 indiceDicFin=i;
@@ -99,7 +101,79 @@ public class ProcesadorArchivo {
         return true;
     }
     
+    public boolean validarDiccionario(String[] lineas){
+        for (int i = 1; i < indiceDicFin; i++) {
+            if (lineas[i].length()>=3){
+                for (int j = 0; j < lineas[i].length(); j++) {
+                    if (!Character.isLetter(lineas[i].charAt(j))){
+                        JOptionPane.showMessageDialog(null, "Las palabras del archivo contienen caracteres inválidos.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return false;
+                    }
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Las palabras del archivo son menores a 3 letras.", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            } 
+        }
+        return true;
+    }
     
+    public void agregarDiccionario (String [] lineas){
+        for (int i = 1; i < indiceDicFin; i++) {
+            diccionario.InsertarAlFinal(lineas[i].toUpperCase());
+        }
+    }
+    
+    public boolean validarLetras(String[] lineas){
+        String[] letras=lineas[indiceDicFin+2].split(",");
+        char[] letrasValidas={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+        
+        if (letras.length!=16){
+            JOptionPane.showMessageDialog(null, "El archivo contiene más de 16 letras para el tablero.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+   
+        for (int i = 0; i < letras.length; i++) {
+            String letra=letras[i].trim();
+            if (letra.length()!=1){
+            JOptionPane.showMessageDialog(null, "El archivo contiene más de 16 letras para el tablero.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+            }
+          
+            boolean letraValida=false;
+            for (int j = 0; j < letrasValidas.length; j++) {
+                if (letra.charAt(0)==letrasValidas[j]){
+                    letraValida=true;
+                    break;
+                }   
+            }
+            
+            if(letraValida==false){
+                JOptionPane.showMessageDialog(null, "El archivo contiene letras inválidas.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+            }
+        }
+        return true;
+    }
+    
+    public void generarTablero (String[] letras){
+        int identificador=0;
+        for (int i = 0; i < tableroLetras.length; i++) {
+            for (int j = 0; j < tableroLetras.length; j++) {
+                tableroLetras[i][j]=letras[identificador].toUpperCase().charAt(0);
+                identificador++;
+            }
+            
+        }
+    }
+    
+    public ListaSimple getDiccionario() {
+        return diccionario;
+    }
+
+    public char[][] getTableroLetras() {
+        return tableroLetras;
+    }
  
     
 }
