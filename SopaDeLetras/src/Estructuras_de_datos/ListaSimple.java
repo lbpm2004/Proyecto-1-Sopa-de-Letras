@@ -8,7 +8,7 @@ package Estructuras_de_datos;
  * @author Luis Peña
  * Descripción de la clase: Lista simplemente enlazada que almacena datos de tipo NodoSimple.
  */
-public class ListaSimple {
+public class ListaSimple<T> {
     private NodoSimple first;
     private NodoSimple last;
     private int tamaño;
@@ -29,7 +29,7 @@ public class ListaSimple {
         tamaño=0;
     }
     
-    public void insertarAlFinal(String newDato){
+    public void insertarAlFinal(T newDato){
         NodoSimple aux = new NodoSimple(newDato);
         
         if(this.esVacia()){
@@ -44,6 +44,7 @@ public class ListaSimple {
     public String mostrarLista(){
         String cadena="";
         NodoSimple aux=first;
+        
         while (aux!=null){
             cadena=cadena+aux.getDato()+"\n";
             aux=aux.getNext();

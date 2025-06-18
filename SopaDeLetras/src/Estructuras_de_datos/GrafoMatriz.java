@@ -18,7 +18,7 @@ public class GrafoMatriz {
 
     public GrafoMatriz(char[][] tablero) {
         this.celdaTablero = tablero;
-        this.matrizAdyacencia = new boolean [N_VERTICES][N_VERTICES];
+        this.matrizAdyacencia = new boolean[N_VERTICES][N_VERTICES];
     }
     
     public void agregarArista(int origen, int destino){

@@ -14,15 +14,14 @@ import javax.swing.JOptionPane;
  * @author luismarianolovera
  */
 public class ProcesadorArchivo {
-    private ListaSimple diccionario;
-    private char[][] tableroLetras;
-    private int indiceDicFin;
+    private ListaSimple diccionario; //Almacena las palabras del archivo TXT.
+    private char[][] tableroLetras; //Matriz de caracteres con las letras del archivo TXT. 
+    private int indiceDicFin; //Indica el índice donde termina el diccionario para una variable de tipo []String que almacena toda la información del archivo TXT.
     
-
     public ProcesadorArchivo() {
-        this.diccionario = new ListaSimple();
-        this.tableroLetras = new char[4][4];
-        this.indiceDicFin = -1;
+        this.diccionario = new ListaSimple(); //Lista simplemente enlazada vacía.
+        this.tableroLetras = new char[4][4]; //Matriz 4x4 vacía.
+        this.indiceDicFin = -1; //Valor predeterminado.
     }
     
     public String leerArchivo(File archivoSeleccionado) {
@@ -104,23 +103,17 @@ public class ProcesadorArchivo {
         for (int i = 1; i < indiceDicFin; i++) {
             if (lineas[i].length()>=3){
                 for (int j = 0; j < lineas[i].length(); j++) {
-                    if (!Character.isLetter(lineas[i].charAt(j))){
+                    if (!Character.isLetter(lineas[i].charAt(j))){ //Valida que la letra [j] de la palabra [i] sea válida.
                         JOptionPane.showMessageDialog(null, "Las palabras del archivo contienen caracteres inválidos.", "Error", JOptionPane.ERROR_MESSAGE);
                         return false;
                     }
                 }
             }else{
-                JOptionPane.showMessageDialog(null, "Las palabras del archivo son menores a 3 letras.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Las palabras del archivo deben tener al menos 3 letras.", "Error", JOptionPane.ERROR_MESSAGE);
                 return false;
             } 
         }
         return true;
-    }
-    
-    public void generarDiccionario (String [] lineas){
-        for (int i = 1; i < indiceDicFin; i++) {
-            diccionario.insertarAlFinal(lineas[i].toUpperCase());
-        }
     }
     
     public boolean validarLetras(String[] lineas){
@@ -128,7 +121,7 @@ public class ProcesadorArchivo {
         char[] letrasValidas={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
         
         if (letras.length!=16){
-            JOptionPane.showMessageDialog(null, "El archivo contiene más de 16 letras para el tablero.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El archivo debe contener exactamente 16 letras para la formación del tablero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
    
@@ -155,12 +148,18 @@ public class ProcesadorArchivo {
         return true;
     }
     
+    public void generarDiccionario (String [] lineas){
+        for (int i = 1; i < indiceDicFin; i++) {
+            diccionario.insertarAlFinal(lineas[i].toUpperCase());
+        }
+    }
+    
     public void generarTablero (String[] lineas){
         String[] letras=lineas[indiceDicFin+2].split(",");
         int identificador=0;
         for (int i = 0; i < tableroLetras.length; i++) {
             for (int j = 0; j < tableroLetras.length; j++) {
-                tableroLetras[i][j]=letras[identificador].toUpperCase().charAt(0);
+                tableroLetras[i][j]=letras[identificador].toUpperCase().charAt(0); //Verificar utilidad del toUpperCase().
                 identificador++;
             }
             
@@ -173,7 +172,7 @@ public class ProcesadorArchivo {
             return false;
         }
         
-        String[] lineas = adaptadorArchivo(contenido);
+        String[] lineas = adaptadorArchivo(contenido); //Array que almacena toda la info del TXT.
         
         if (validarEstructura(lineas)==true){
             if (validarDiccionario(lineas)==true){

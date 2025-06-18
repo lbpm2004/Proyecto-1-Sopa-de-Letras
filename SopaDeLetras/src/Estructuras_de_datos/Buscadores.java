@@ -52,6 +52,13 @@ public class Buscadores {
         }
         return null;
     }
-}
+        
+    public void BFS(){ //Implementar
 
-      
+    }
+    
+    public void DFS(){ //Implementar
+        
+    }
+}
+     

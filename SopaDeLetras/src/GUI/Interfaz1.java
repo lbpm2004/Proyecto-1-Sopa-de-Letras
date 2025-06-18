@@ -4,7 +4,7 @@
  */
 package GUI;
 
-import Estructuras_de_datos.ListaSimple;
+import Estructuras_de_datos.Buscadores;
 import Estructuras_de_datos.ProcesadorArchivo;
 import Estructuras_de_datos.GrafoMatriz;
 import javax.swing.JLabel;
@@ -21,6 +21,7 @@ public class Interfaz1 extends javax.swing.JFrame {
     private JLabel[][] tablero; //simula el tablero como una matriz de JLabels
     private ProcesadorArchivo procesador;
     private GrafoMatriz grafo;
+    private Buscadores buscador;
 
     
     /**
@@ -30,6 +31,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         
         initComponents();
         procesador = new ProcesadorArchivo();
+        buscador = new Buscadores();
         tablero = new JLabel[4][4];
         
         tablero[0][0] = Jlabel00;
@@ -49,16 +51,6 @@ public class Interfaz1 extends javax.swing.JFrame {
         tablero[3][2] = Jlabel32;
         tablero[3][3] = Jlabel33;
         
-        /* Código para probar el correcto funcionamiento del tablero.
-        char[] cadena = {'a','b','c','d','a','b','c','d','a','b','c','d','a','b','c','d'};
-        
-        int k = 0;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                tablero[i][j].setText(String.valueOf(cadena[k]));
-                k++;
-            }    
-        }*/
     }
     
     /**
@@ -89,8 +81,7 @@ public class Interfaz1 extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ocurrió un error. Intenta de nuevo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);    
         }
     }
-
-            
+       
     /**
      * 
      */
@@ -100,7 +91,6 @@ public class Interfaz1 extends javax.swing.JFrame {
             for (int j = 0; j < tablero[i].length; j++) {
                 tablero[i][j].setText(Character.toString(tableroLetras[i][j]));
             }
- 
         }
     }
     
@@ -128,14 +118,14 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         cargar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        buscar = new javax.swing.JButton();
+        busquedaGeneral = new javax.swing.JButton();
         establecerBusqueda = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         verPalabrasEncontradas = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        textoPalabra = new javax.swing.JTextField();
-        buscarPalabra = new javax.swing.JButton();
+        palabraIngresada = new javax.swing.JTextField();
+        busquedaEspecifica = new javax.swing.JButton();
         guardarPalabraDiccionario = new javax.swing.JButton();
         reiniciar = new javax.swing.JButton();
         Jlabel03 = new javax.swing.JLabel();
@@ -158,7 +148,6 @@ public class Interfaz1 extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         jSeparator6 = new javax.swing.JSeparator();
-        jSeparator7 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
         jSeparator8 = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
@@ -177,15 +166,16 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Presione el botón para cargar un diccionario y generar el tablero:");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(100, 70, 580, 30);
+        jLabel1.setBounds(100, 60, 580, 40);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Diccionario");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(170, 120, 150, 20);
+        jLabel2.setBounds(170, 120, 150, 22);
 
         verDiccionario.setColumns(20);
+        verDiccionario.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         verDiccionario.setRows(5);
         jScrollPane1.setViewportView(verDiccionario);
 
@@ -196,7 +186,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Tablero");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(760, 120, 80, 20);
+        jLabel3.setBounds(760, 120, 80, 22);
 
         cargar.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         cargar.setText("Cargar archivo");
@@ -206,23 +196,23 @@ public class Interfaz1 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(cargar);
-        cargar.setBounds(720, 70, 160, 30);
+        cargar.setBounds(670, 70, 160, 30);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Seleccione el método de búsqueda preferido y presione el botón para buscar palabras del diccionario:");
+        jLabel4.setText("Seleccione el método de búsqueda preferido y presione el botón para buscar palabras del diccionario");
         getContentPane().add(jLabel4);
         jLabel4.setBounds(50, 390, 940, 30);
 
-        buscar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        buscar.setText("Búsqueda automática");
-        buscar.addActionListener(new java.awt.event.ActionListener() {
+        busquedaGeneral.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        busquedaGeneral.setText("Búsqueda General");
+        busquedaGeneral.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buscarActionPerformed(evt);
+                busquedaGeneralActionPerformed(evt);
             }
         });
-        getContentPane().add(buscar);
-        buscar.setBounds(500, 430, 190, 30);
+        getContentPane().add(busquedaGeneral);
+        busquedaGeneral.setBounds(500, 430, 190, 30);
 
         establecerBusqueda.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         establecerBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "BFS", "DFS" }));
@@ -249,27 +239,27 @@ public class Interfaz1 extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel6.setText("Rellene el campo vacío con la palabra que desea buscar en el tablero:");
+        jLabel6.setText("Rellene el campo vacío con la palabra que desea buscar en el tablero");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(270, 670, 550, 20);
+        jLabel6.setBounds(270, 670, 550, 22);
 
-        textoPalabra.addActionListener(new java.awt.event.ActionListener() {
+        palabraIngresada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textoPalabraActionPerformed(evt);
+                palabraIngresadaActionPerformed(evt);
             }
         });
-        getContentPane().add(textoPalabra);
-        textoPalabra.setBounds(50, 700, 250, 40);
+        getContentPane().add(palabraIngresada);
+        palabraIngresada.setBounds(260, 710, 290, 40);
 
-        buscarPalabra.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        buscarPalabra.setText("Buscar palabra");
-        buscarPalabra.addActionListener(new java.awt.event.ActionListener() {
+        busquedaEspecifica.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        busquedaEspecifica.setText("Búsqueda Específica");
+        busquedaEspecifica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buscarPalabraActionPerformed(evt);
+                busquedaEspecificaActionPerformed(evt);
             }
         });
-        getContentPane().add(buscarPalabra);
-        buscarPalabra.setBounds(320, 700, 160, 40);
+        getContentPane().add(busquedaEspecifica);
+        busquedaEspecifica.setBounds(560, 710, 180, 40);
 
         guardarPalabraDiccionario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         guardarPalabraDiccionario.setText("Guardar Diccionario");
@@ -389,8 +379,6 @@ public class Interfaz1 extends javax.swing.JFrame {
         jSeparator3.setBounds(40, 110, 950, 10);
         getContentPane().add(jSeparator6);
         jSeparator6.setBounds(40, 390, 950, 30);
-        getContentPane().add(jSeparator7);
-        jSeparator7.setBounds(40, 470, 950, 10);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -405,34 +393,65 @@ public class Interfaz1 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActionPerformed
+    private void busquedaGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaGeneralActionPerformed
         // TODO add your handling code here:
-        //Búsqueda automática hecha por el método de búsqueda seleccionado 
-    }//GEN-LAST:event_buscarActionPerformed
+        //Búsqueda automática hecha por el método de búsqueda seleccionado para hallar las palabras del tablero.
+        
+        try{
+            if(tablero[0][0].getText() == "" || procesador.getDiccionario().esVacia() || grafo == null){
+                throw new Exception();
+            }
+            
+            if(establecerBusqueda.equals("BFS")){
+                buscador.BFS(); //Implementar
+            }else{
+               buscador.DFS(); //Implementar 
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Primero carga un archivo para usar esta función.");
+        }
+               
+    }//GEN-LAST:event_busquedaGeneralActionPerformed
 
     private void establecerBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_establecerBusquedaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_establecerBusquedaActionPerformed
 
-    private void textoPalabraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoPalabraActionPerformed
+    private void palabraIngresadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_palabraIngresadaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textoPalabraActionPerformed
+    }//GEN-LAST:event_palabraIngresadaActionPerformed
 
     private void reiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reiniciarActionPerformed
         // TODO add your handling code here:
         //Reinicia los atributos y JTextField para empezar de nuevo sin necesidad de cerrrar y abrir la interfaz nuevamente. 
     }//GEN-LAST:event_reiniciarActionPerformed
 
-    private void buscarPalabraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarPalabraActionPerformed
+    private void busquedaEspecificaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaEspecificaActionPerformed
         // TODO add your handling code here:
         //Búsqueda específica hecha siempre con el método de búsqueda BFS
-    }//GEN-LAST:event_buscarPalabraActionPerformed
+        
+        try{
+            String palabra = palabraIngresada.getText().toUpperCase();
+            
+            if(tablero[0][0].getText() == "" || procesador.getDiccionario().esVacia() || grafo == null){
+                throw new Exception("Primero carga un archivo para usar esta función");
+            }else if(palabra.length() < 3){
+                throw new Exception("Debes ingresar una palabra válida (al menos 3 letras).");
+            }
+            
+            buscador.BFS(); //Implementar
+            //Si la encuentra agregar "palabra" al diccionario.
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        } 
+    }//GEN-LAST:event_busquedaEspecificaActionPerformed
 
     private void cargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarActionPerformed
         // TODO add your handling code here:
         try{
             CargarArchivoTXT();
-            grafo = new GrafoMatriz(procesador.getTableroLetras());
+            grafo = new GrafoMatriz(procesador.getTableroLetras()); //Recibe una matriz 4x4 de caracteres.
             grafo.construirGrafo();
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "Error:" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -494,8 +513,8 @@ public class Interfaz1 extends javax.swing.JFrame {
     private javax.swing.JLabel Jlabel31;
     private javax.swing.JLabel Jlabel32;
     private javax.swing.JLabel Jlabel33;
-    private javax.swing.JButton buscar;
-    private javax.swing.JButton buscarPalabra;
+    private javax.swing.JButton busquedaEspecifica;
+    private javax.swing.JButton busquedaGeneral;
     private javax.swing.JButton cargar;
     private javax.swing.JComboBox<String> establecerBusqueda;
     private javax.swing.JButton guardarPalabraDiccionario;
@@ -513,10 +532,9 @@ public class Interfaz1 extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator6;
-    private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JTextField palabraIngresada;
     private javax.swing.JButton reiniciar;
-    private javax.swing.JTextField textoPalabra;
     private javax.swing.JLabel titulo;
     private javax.swing.JTextArea verDiccionario;
     private javax.swing.JTextArea verPalabrasEncontradas;

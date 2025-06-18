@@ -8,20 +8,20 @@ package Estructuras_de_datos;
  * @author Luis Peña
  * Descripción de la clase: Define un tipo de dato abstracto, constituido por un dato de tipo String (palabra) y next (un apuntador a tipo de dato NodoSimple)
  */
-public class NodoSimple {
-    private String dato;
+public class NodoSimple<T> {
+    private T dato;
     private NodoSimple next;
 
-    public NodoSimple(String newDato) {
+    public NodoSimple(T newDato) {
         this.dato = newDato;
         this.next = null;
     }
 
-    public String getDato() {
+    public T getDato() {
         return dato;
     }
 
-    public void setDato(String dato) {
+    public void setDato(T dato) {
         this.dato = dato;
     }
 
@@ -32,7 +32,5 @@ public class NodoSimple {
     public void setNext(NodoSimple next) {
         this.next = next;
     }
-    
-    
     
 }
