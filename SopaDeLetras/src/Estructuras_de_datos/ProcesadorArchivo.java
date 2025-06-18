@@ -118,7 +118,8 @@ public class ProcesadorArchivo {
     
     public boolean validarLetras(String[] lineas){
         String[] letras=lineas[indiceDicFin+2].split(",");
-        char[] letrasValidas={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+        char[] letrasValidas={'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z',
+            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
         
         if (letras.length!=16){
             JOptionPane.showMessageDialog(null, "El archivo debe contener exactamente 16 letras para la formación del tablero.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -159,7 +160,7 @@ public class ProcesadorArchivo {
         int identificador=0;
         for (int i = 0; i < tableroLetras.length; i++) {
             for (int j = 0; j < tableroLetras.length; j++) {
-                tableroLetras[i][j]=letras[identificador].toUpperCase().charAt(0); //Verificar utilidad del toUpperCase().
+                tableroLetras[i][j]=letras[identificador].toUpperCase().charAt(0);
                 identificador++;
             }
             
