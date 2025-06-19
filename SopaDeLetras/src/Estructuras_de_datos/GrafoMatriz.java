@@ -9,7 +9,7 @@ package Estructuras_de_datos;
  * @author luismarianolovera
  */
 public class GrafoMatriz {
-    private char[][] celdaTablero; //matriz 4 filas x 4 columnas
+    private char[][] tablero; //matriz 4 filas x 4 columnas
     private boolean[][] matrizAdyacencia; // matriz 16x16, demuestra si es adyacente o no
     public static final int N_VERTICES = 16; //Numero de vertices del grafo
     public static final int N_FILAS=4;
@@ -17,7 +17,7 @@ public class GrafoMatriz {
     
 
     public GrafoMatriz(char[][] tablero) {
-        this.celdaTablero = tablero;
+        this.tablero = tablero;
         this.matrizAdyacencia = new boolean[N_VERTICES][N_VERTICES];
     }
     
@@ -82,8 +82,8 @@ public class GrafoMatriz {
         }
     }
                 
-    public char[][] getCeldaTablero(){ //revisar
-        return celdaTablero;
+    public char[][] getTablero(){ //revisar
+        return tablero;
     }
 
     public boolean[][] getMatrizAdyacencia() { //revisar

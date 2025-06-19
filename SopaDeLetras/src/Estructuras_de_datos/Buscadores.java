@@ -9,56 +9,51 @@ package Estructuras_de_datos;
  * @author luismarianolovera
  */
 public class Buscadores {
+    private int filaRecorrido;
+    private int columnaRecorrido;
 
     public Buscadores() {
+        this.filaRecorrido = 0;
+        this.columnaRecorrido = 0;
     }
     
-    public int[] establecerVerticeInicial(GrafoMatriz grafo, String palabraObjetivo) {
-        char[][] tablero = grafo.getCeldaTablero();
+    public void iniciarBusqueda(){
+        filaRecorrido=0;
+        columnaRecorrido=0;
+    }
+    
+    public int establecerVerticeInicial(GrafoMatriz grafo, String palabraObjetivo) {
+        char[][] tablero = grafo.getTablero();
         int N_FILAS = GrafoMatriz.N_FILAS;
         int N_COLUMNAS = GrafoMatriz.N_COLUMNAS;
         char letraInicial = palabraObjetivo.charAt(0);
-        int filaRecorrido=0;
-        int columnaRecorrido=0;
-       
-        while (filaRecorrido<N_FILAS){
-            boolean encontrado=false;
-            int vertice=-1;
-            
-            for (int i = filaRecorrido; i < N_FILAS && encontrado==false; i++) {
-     
-                int jInicio;
-                if (i==filaRecorrido){
-                    jInicio=columnaRecorrido;
-                }else{
-                    jInicio=0;
-                }
-                
-                for (int j = jInicio; j < N_COLUMNAS; j++) {
-                    if (tablero[i][j] == letraInicial) {
-                        vertice=(i*N_COLUMNAS)+j;
-                        filaRecorrido=i;
-                        columnaRecorrido=j+1;
-                        if (columnaRecorrido>=N_COLUMNAS){
-                            filaRecorrido++;
-                            columnaRecorrido=0;
-                        }
-                        encontrado=true;
-                        break;
+        int vertice=-1;
+        
+        for (int i = filaRecorrido; i < tablero.length; i++) {
+            for (int j = columnaRecorrido; j < tablero[i].length; j++) {
+                if (tablero[i][j] == letraInicial) {
+                    vertice=(i*N_COLUMNAS)+j;
+                    filaRecorrido=i;
+                    columnaRecorrido=j+1;
+                    if (columnaRecorrido>=N_COLUMNAS){
+                        filaRecorrido++;
+                        columnaRecorrido=0;
                     }
+                    return vertice;
                 }
-  
             }
         }
-        return null;
+        return vertice; // regresa vertice -1, en caso de error, o no se encontro letra
     }
-        
-    public void BFS(){ //Implementar
-
-    }
+ 
     
-    public void DFS(){ //Implementar
+    public boolean DFS(int indicePalabra, int vertice, GrafoMatriz grafo, String palabraObjetivo, boolean[] visitado){
         
     }
-}
-     
+        
+    
+        
+        
+        
+        
+  
