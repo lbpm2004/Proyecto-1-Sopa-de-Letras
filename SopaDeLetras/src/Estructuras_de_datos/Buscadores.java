@@ -4,9 +4,11 @@
  */
 package Estructuras_de_datos;
 
+import static Estructuras_de_datos.GrafoMatriz.N_COLUMNAS;
+
 /**
  *
- * @author luismarianolovera
+ * @author luismarianolovera y Diego Linares
  */
 public class Buscadores {
     private int filaRecorrido;
@@ -47,9 +49,152 @@ public class Buscadores {
     }
  
     
-    public boolean DFS(int indicePalabra, int vertice, GrafoMatriz grafo, String palabraObjetivo, boolean[] visitado){
+    public boolean DFS(int indice, int vertice, GrafoMatriz grafo, String palabra, boolean[] visitado){
+        if (indice == palabra.length()) {
+            return true;
+        }
+
+        visitado[vertice] = true;
+
+        char siguienteLetra = palabra.charAt(indice);
+
+        for (int vecino = 0; vecino < GrafoMatriz.N_VERTICES; vecino++) {
+            if (grafo.getMatrizAdyacencia()[vertice][vecino] && !visitado[vecino]) {
+                if (grafo.getLetra(vecino) == siguienteLetra) {
+                    if (DFS(indice + 1, vecino, grafo, palabra, visitado)) {
+                        return true;
+                    }
+                }
+            }
+        }
         
+        visitado[vertice] = false; 
+        
+        return false;
     }
+    
+    private boolean BFS(int inicio, String palabra, GrafoMatriz grafo, boolean[] visitados) {
+        Cola<Integer> q = new Cola<>(); 
+        Cola<String> colaQ = new Cola<>(); 
+      
+        if (grafo.getLetra(inicio) != palabra.charAt(0)) {
+            return false;
+        }
+
+        visitados[inicio] = true;
+        q.encolar(inicio);
+        colaQ.encolar(String.valueOf(grafo.getLetra(inicio)));
+
+        while (!q.esVacia()) {
+            int verticeActual = (Integer) q.getFront().getDato();
+            String currentPath = (String) colaQ.getFront().getDato();
+            
+            q.desencolar();
+            colaQ.desencolar();
+
+            if (currentPath.equals(palabra)) {
+                return true;
+            }
+
+            if (currentPath.length() >= palabra.length()) {
+                continue; 
+            }
+
+            for (int vecino = 0; vecino < GrafoMatriz.N_VERTICES; vecino++) {
+                if (grafo.getMatrizAdyacencia()[verticeActual][vecino] && !visitados[vecino]) { 
+                    char letraVecino = grafo.getLetra(vecino); 
+                    
+                    if (currentPath.length() < palabra.length() && letraVecino == palabra.charAt(currentPath.length())) {
+                        String newPath = currentPath + letraVecino;
+                        
+                        q.encolar(vecino);
+                        colaQ.encolar(newPath);
+                        visitados[vecino] = true; 
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    public ListaSimple<String> buscarTodasDFS(GrafoMatriz grafo, ListaSimple diccionario) {
+        ListaSimple<String> encontradas = new ListaSimple<>();
+
+        if (grafo == null || diccionario == null || diccionario.esVacia()) {
+            return encontradas;
+        }
+        
+        NodoSimple<String> aux = diccionario.getFirst();
+        while (aux != null) {
+            String palabra = aux.getDato();
+
+            if (palabra.length() >= 3) {
+                this.iniciarBusqueda(); 
+
+                int verticeInicial;
+                while ((verticeInicial = establecerVerticeInicial(grafo, palabra)) != -1) {
+                    boolean[] visitados = new boolean[GrafoMatriz.N_VERTICES];
+                    
+                    if (DFS(1, verticeInicial, grafo, palabra, visitados)) {
+                        boolean palabraEncontrada = false;
+                        NodoSimple<String> nodoResultado = encontradas.getFirst();
+                        while(nodoResultado != null) {
+                            if (nodoResultado.getDato().equals(palabra)) {
+                                palabraEncontrada = true;
+                                break;
+                            }
+                            nodoResultado = nodoResultado.getNext();
+                        }
+                        
+                        if (!palabraEncontrada) {
+                            encontradas.insertarAlFinal(palabra);
+                        }
+                    }
+                }
+            }
+            aux = aux.getNext();
+        }
+        return encontradas;
+    }
+    
+    public ListaSimple<String> buscarTodasBFS(GrafoMatriz grafo, ListaSimple diccionario) {
+        ListaSimple<String> encontradas = new ListaSimple<>();
+
+        if (grafo == null || diccionario == null || diccionario.esVacia()) {
+            return encontradas;
+        }
+
+        NodoSimple<String> aux = diccionario.getFirst();
+        while (aux != null) {
+            String palabra = aux.getDato();
+
+            if (palabra.length() >= 3) {
+                for (int inicio = 0; inicio < GrafoMatriz.N_VERTICES; inicio++) {
+                    boolean[] visitados = new boolean[GrafoMatriz.N_VERTICES];
+                    
+                    if (BFS(inicio, palabra, grafo, visitados)) {
+                        boolean palabraEncontrada = false;
+                        NodoSimple<String> nodoResultado = encontradas.getFirst();
+                        while(nodoResultado != null) {
+                            if (nodoResultado.getDato().equals(palabra)) {
+                                palabraEncontrada = true;
+                                break;
+                            }
+                            nodoResultado = nodoResultado.getNext();
+                        }
+                        
+                        if (!palabraEncontrada) {
+                            encontradas.insertarAlFinal(palabra);
+                        }
+                        break; 
+                    }
+                }
+            }
+            aux = aux.getNext();
+        }
+        return encontradas;
+    }
+}
         
     
         

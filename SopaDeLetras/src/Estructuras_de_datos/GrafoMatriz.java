@@ -6,7 +6,7 @@ package Estructuras_de_datos;
 
 /**
  *
- * @author luismarianolovera
+ * @author luismarianolovera y Diego Linares
  */
 public class GrafoMatriz {
     private char[][] tablero; //matriz 4 filas x 4 columnas
@@ -88,6 +88,12 @@ public class GrafoMatriz {
 
     public boolean[][] getMatrizAdyacencia() { //revisar
         return matrizAdyacencia;
+    }
+    
+    public char getLetra(int vertice) {
+        int fila = vertice / N_COLUMNAS;
+        int columna = vertice % N_COLUMNAS;
+        return tablero[fila][columna];
     }
     
 }

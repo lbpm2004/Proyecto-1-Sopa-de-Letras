@@ -7,8 +7,10 @@ package GUI;
 import Estructuras_de_datos.Buscadores;
 import Estructuras_de_datos.ProcesadorArchivo;
 import Estructuras_de_datos.GrafoMatriz;
+import Estructuras_de_datos.ListaSimple;
 import javax.swing.JLabel;
 import java.io.File;
+import javax.swing.JTextArea;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -22,6 +24,9 @@ public class Interfaz1 extends javax.swing.JFrame {
     private ProcesadorArchivo procesador;
     private GrafoMatriz grafo;
     private Buscadores buscador;
+    private JLabel labelTiempo;
+    private JTextArea Resultados;
+    
 
     
     /**
@@ -33,6 +38,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         procesador = new ProcesadorArchivo();
         buscador = new Buscadores();
         tablero = new JLabel[4][4];
+        establecerBusqueda.setSelectedItem("DFS");
         
         tablero[0][0] = Jlabel00;
         tablero[0][1] = Jlabel01;
@@ -75,6 +81,7 @@ public class Interfaz1 extends javax.swing.JFrame {
                 if (procesador.procesarArchivo(archivoSeleccionado)==true) {
                     MostrarTablero();
                     MostrarDiccionario();
+                    JOptionPane.showMessageDialog(this, "Archivo cargado con éxito.");
                 }
             }
         }catch (Exception e){
@@ -398,15 +405,29 @@ public class Interfaz1 extends javax.swing.JFrame {
         //Búsqueda automática hecha por el método de búsqueda seleccionado para hallar las palabras del tablero.
         
         try{
-            if(tablero[0][0].getText() == "" || procesador.getDiccionario().esVacia() || grafo == null){
+            if(tablero[0][0].getText().isEmpty() || procesador.getDiccionario().esVacia() || grafo == null){
                 throw new Exception();
             }
+            long empezarTiempo = System.currentTimeMillis(); // Inicia el cronómetro
+            ListaSimple<String> palabrasEncontradas;
+            String metodo = (String) establecerBusqueda.getSelectedItem();
             
-            if(establecerBusqueda.equals("BFS")){
-                buscador.BFS(); //Implementar
+            if(metodo.equals("BFS")){
+                palabrasEncontradas = buscador.buscarTodasBFS(grafo, procesador.getDiccionario());      
             }else{
-               buscador.DFS(); //Implementar 
+                palabrasEncontradas = buscador.buscarTodasDFS(grafo, procesador.getDiccionario());
             }
+
+            if (palabrasEncontradas.esVacia()) { 
+                verPalabrasEncontradas.setText("No se encontraron palabras del diccionario en el tablero.");
+            } else {
+                verPalabrasEncontradas.setText("Método: " + metodo + "\nPalabras encontradas:\n" + palabrasEncontradas.mostrarLista());
+            }
+            
+            long terminarTiempo = System.currentTimeMillis(); // Finaliza el cronómetro
+            long tiempo = terminarTiempo - empezarTiempo;
+            jLabel5.setText("El tiempo total de búsqueda fue de " + tiempo + " milisegundos.");
+            
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "Primero carga un archivo para usar esta función.");
         }
@@ -429,24 +450,23 @@ public class Interfaz1 extends javax.swing.JFrame {
     private void busquedaEspecificaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaEspecificaActionPerformed
         // TODO add your handling code here:
         //Búsqueda específica hecha siempre con el método de búsqueda BFS
-        
         try{
             String palabra = palabraIngresada.getText().toUpperCase();
             
-            if(tablero[0][0].getText() == "" || procesador.getDiccionario().esVacia() || grafo == null){
+            if(tablero[0][0].getText().equals("") || procesador.getDiccionario().esVacia() || grafo == null){
                 throw new Exception("Primero carga un archivo para usar esta función");
             }else if(palabra.length() < 3){
                 throw new Exception("Debes ingresar una palabra válida (al menos 3 letras).");
             }
             
-            buscador.BFS(); //Implementar
+            // buscador.DFS(); //Implementar
             //Si la encuentra agregar "palabra" al diccionario.
             
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
         } 
     }//GEN-LAST:event_busquedaEspecificaActionPerformed
-
+    
     private void cargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarActionPerformed
         // TODO add your handling code here:
         try{
