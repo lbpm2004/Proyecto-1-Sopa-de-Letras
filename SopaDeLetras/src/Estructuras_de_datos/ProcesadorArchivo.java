@@ -191,7 +191,12 @@ public class ProcesadorArchivo {
         }
         return true;
     }
-     
+    
+    public void reiniciar(){
+        diccionario.vaciar();
+        indiceDicFin = -1;
+    }
+    
     public ListaSimple getDiccionario() {
         return diccionario;
     }

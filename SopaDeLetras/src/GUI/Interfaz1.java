@@ -31,7 +31,6 @@ public class Interfaz1 extends javax.swing.JFrame {
         
         initComponents();
         procesador = new ProcesadorArchivo();
-        buscador = new Buscadores();
         tablero = new JLabel[4][4];
         
         tablero[0][0] = Jlabel00;
@@ -225,6 +224,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         establecerBusqueda.setBounds(400, 430, 90, 30);
 
         verPalabrasEncontradas.setColumns(20);
+        verPalabrasEncontradas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         verPalabrasEncontradas.setRows(5);
         jScrollPane2.setViewportView(verPalabrasEncontradas);
 
@@ -395,22 +395,28 @@ public class Interfaz1 extends javax.swing.JFrame {
 
     private void busquedaGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaGeneralActionPerformed
         // TODO add your handling code here:
-        //Búsqueda automática hecha por el método de búsqueda seleccionado para hallar las palabras del tablero.
-        
+        //Búsqueda automática hecha por el método de búsqueda seleccionado para hallar las palabras del tablero.  
+        grafo.imprimirAdyacencias();
         try{
             if(tablero[0][0].getText() == "" || procesador.getDiccionario().esVacia() || grafo == null){
                 throw new Exception();
             }
             
+            buscador = new Buscadores(grafo, procesador.getDiccionario());
+            String palabrasEncontradas;
+            
             if(establecerBusqueda.equals("BFS")){
-                buscador.BFS(); //Implementar
+                palabrasEncontradas = buscador.buscarPalabras(true); 
+                
             }else{
-               buscador.DFS(); //Implementar 
+               palabrasEncontradas = buscador.buscarPalabras(false);
             }
+            
+            verPalabrasEncontradas.setText(palabrasEncontradas);
+            
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "Primero carga un archivo para usar esta función.");
-        }
-               
+        }          
     }//GEN-LAST:event_busquedaGeneralActionPerformed
 
     private void establecerBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_establecerBusquedaActionPerformed
@@ -423,7 +429,19 @@ public class Interfaz1 extends javax.swing.JFrame {
 
     private void reiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reiniciarActionPerformed
         // TODO add your handling code here:
-        //Reinicia los atributos y JTextField para empezar de nuevo sin necesidad de cerrrar y abrir la interfaz nuevamente. 
+        //Reinicia los atributos para empezar de nuevo sin necesidad de cerrrar y abrir la interfaz nuevamente. 
+        procesador.reiniciar();
+        verDiccionario.setText("");
+        verPalabrasEncontradas.setText("");
+        palabraIngresada.setText("");
+        
+        for(int i=0; i < 4; i++){
+            for(int j=0; j < 4; j++){
+                tablero[i][j].setText("");
+            }
+        }
+        
+        JOptionPane.showMessageDialog(null, "Sopa de letra reiniciada exitosamente.");
     }//GEN-LAST:event_reiniciarActionPerformed
 
     private void busquedaEspecificaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaEspecificaActionPerformed
@@ -439,7 +457,7 @@ public class Interfaz1 extends javax.swing.JFrame {
                 throw new Exception("Debes ingresar una palabra válida (al menos 3 letras).");
             }
             
-            buscador.BFS(); //Implementar
+            //buscador.BFS(); Implementar
             //Si la encuentra agregar "palabra" al diccionario.
             
         }catch(Exception e){

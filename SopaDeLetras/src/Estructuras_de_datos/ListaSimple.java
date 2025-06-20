@@ -9,8 +9,8 @@ package Estructuras_de_datos;
  * Descripción de la clase: Lista simplemente enlazada que almacena datos de tipo NodoSimple.
  */
 public class ListaSimple<T> {
-    private NodoSimple first;
-    private NodoSimple last;
+    private NodoSimple<T> first;
+    private NodoSimple<T> last;
     private int tamaño;
 
     public ListaSimple() {
@@ -30,7 +30,7 @@ public class ListaSimple<T> {
     }
     
     public void insertarAlFinal(T newDato){
-        NodoSimple aux = new NodoSimple(newDato);
+        NodoSimple<T> aux = new NodoSimple(newDato);
         
         if(this.esVacia()){
             first = last = aux;

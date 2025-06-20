@@ -10,7 +10,7 @@ package Estructuras_de_datos;
  */
 public class NodoSimple<T> {
     private T dato;
-    private NodoSimple next;
+    private NodoSimple<T> next;
 
     public NodoSimple(T newDato) {
         this.dato = newDato;

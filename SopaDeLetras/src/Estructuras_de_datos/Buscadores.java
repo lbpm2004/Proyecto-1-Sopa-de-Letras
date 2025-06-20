@@ -9,56 +9,139 @@ package Estructuras_de_datos;
  * @author luismarianolovera
  */
 public class Buscadores {
+    private GrafoMatriz grafo;
+    private ListaSimple<String> diccionario;
 
-    public Buscadores() {
+    public Buscadores(GrafoMatriz grafo, ListaSimple diccionario) {
+        this.grafo = grafo;
+        this.diccionario = diccionario;
     }
     
-    public int[] establecerVerticeInicial(GrafoMatriz grafo, String palabraObjetivo) {
+    public String buscarPalabras(boolean metodoBusqueda) {
+        String resultados = "";
+        NodoSimple<String> nodoActual = diccionario.getFirst();
+
+        while (nodoActual != null) {
+            String palabra = nodoActual.getDato();
+            boolean palabraEncontrada;
+
+            if (metodoBusqueda) {
+                palabraEncontrada = BFS(palabra);
+            } else {
+                palabraEncontrada = DFS(palabra);
+            }
+
+            if (palabraEncontrada) {
+                resultados += palabra + "\n";
+            }
+            nodoActual = nodoActual.getNext();
+        }
+        return resultados;
+    }
+        
+    private boolean BFS(String palabra) {
+        char primeraLetra = palabra.charAt(0);
         char[][] tablero = grafo.getCeldaTablero();
-        int N_FILAS = GrafoMatriz.N_FILAS;
-        int N_COLUMNAS = GrafoMatriz.N_COLUMNAS;
-        char letraInicial = palabraObjetivo.charAt(0);
-        int filaRecorrido=0;
-        int columnaRecorrido=0;
-       
-        while (filaRecorrido<N_FILAS){
-            boolean encontrado=false;
-            int vertice=-1;
-            
-            for (int i = filaRecorrido; i < N_FILAS && encontrado==false; i++) {
-     
-                int jInicio;
-                if (i==filaRecorrido){
-                    jInicio=columnaRecorrido;
-                }else{
-                    jInicio=0;
+
+        for (int i = 0; i < GrafoMatriz.N_FILAS; i++) { //número de filas
+            for (int j = 0; j < GrafoMatriz.N_COLUMNAS; j++) { //número de columnas
+                if (tablero[i][j] == primeraLetra) {
+                    int verticeInicial = i * GrafoMatriz.N_COLUMNAS + j;
+                    ListaSimple<Integer> celdasUsadas = new ListaSimple();
+                    if (bfsDesdeVertice(verticeInicial, palabra, celdasUsadas)) {
+                        return true;
+                    }
                 }
-                
-                for (int j = jInicio; j < N_COLUMNAS; j++) {
-                    if (tablero[i][j] == letraInicial) {
-                        vertice=(i*N_COLUMNAS)+j;
-                        filaRecorrido=i;
-                        columnaRecorrido=j+1;
-                        if (columnaRecorrido>=N_COLUMNAS){
-                            filaRecorrido++;
-                            columnaRecorrido=0;
-                        }
-                        encontrado=true;
+            }
+        }
+        
+        return false;
+    }
+
+        
+    private boolean bfsDesdeVertice(int verticeInicial, String palabra, ListaSimple celdasUsadas) {
+        Cola<Integer> cola = new Cola<>();
+        //ListaSimple<Integer> celdasUsadas = new ListaSimple();
+        cola.encolar(verticeInicial);
+        celdasUsadas.insertarAlFinal(verticeInicial);
+        int letraActual = 1;
+
+        while (!cola.esVacia() && letraActual < palabra.length()) {
+            int vertice = cola.desencolar();
+            char letraBuscada = palabra.charAt(letraActual);
+
+            for (int vecino = 0; vecino < GrafoMatriz.N_VERTICES; vecino++) {
+                if (grafo.getMatrizAdyacencia()[vertice][vecino] && !contiene(celdasUsadas, vecino)) {
+                    int fila = vecino / GrafoMatriz.N_COLUMNAS;
+                    int col = vecino % GrafoMatriz.N_COLUMNAS;
+                    if (grafo.getCeldaTablero()[fila][col] == letraBuscada) {
+                        cola.encolar(vecino);
+                        celdasUsadas.insertarAlFinal(vecino);
+                        letraActual++;
                         break;
                     }
                 }
-  
             }
         }
-        return null;
-    }
-        
-    public void BFS(){ //Implementar
-
+        return letraActual == palabra.length();
     }
     
-    public void DFS(){ //Implementar
-        
+    private boolean DFS(String palabra) {
+        char primeraLetra = palabra.charAt(0);
+        char[][] tablero = grafo.getCeldaTablero();
+
+        for (int i = 0; i < GrafoMatriz.N_FILAS; i++) {
+            for (int j = 0; j < GrafoMatriz.N_COLUMNAS; j++) {
+                if (tablero[i][j] == primeraLetra) {
+                    int verticeInicial = i * GrafoMatriz.N_COLUMNAS + j;
+                    if (dfsDesdeVertice(verticeInicial, palabra)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * DFS desde un vértice inicial.
+     */
+    private boolean dfsDesdeVertice(int verticeInicial, String palabra) {
+        Pila<Integer> pila = new Pila();
+        ListaSimple<Integer> celdasUsadas = new ListaSimple();
+        pila.apilar(verticeInicial);
+        celdasUsadas.insertarAlFinal(verticeInicial);
+        int letraActual = 1;
+
+        while (!pila.esVacia() && letraActual < palabra.length()) {
+            int vertice = pila.desapilar();
+            char letraBuscada = palabra.charAt(letraActual);
+
+            for (int vecino = 0; vecino < GrafoMatriz.N_VERTICES; vecino++) {
+                if (grafo.getMatrizAdyacencia()[vertice][vecino] && !contiene(celdasUsadas, vecino)) {
+                    int fila = vecino / GrafoMatriz.N_COLUMNAS;
+                    int col = vecino % GrafoMatriz.N_COLUMNAS;
+                    if (grafo.getCeldaTablero()[fila][col] == letraBuscada) {
+                        pila.apilar(vecino);
+                        celdasUsadas.insertarAlFinal(vecino);
+                        letraActual++;
+                        break;
+                    }
+                }
+            }
+        }
+        return letraActual == palabra.length();
+    }
+    
+    // Método auxiliar para verificar si la lista contiene un elemento
+    private boolean contiene(ListaSimple<Integer> lista, int valor) {
+        NodoSimple<Integer> actual = lista.getFirst();
+        while (actual != null) {
+            if (actual.getDato() == valor) {
+                return true;
+            }
+            actual = actual.getNext();
+        }
+        return false;
     }
 }
-     
