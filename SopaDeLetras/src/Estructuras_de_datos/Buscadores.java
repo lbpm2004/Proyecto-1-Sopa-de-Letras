@@ -47,27 +47,30 @@ public class Buscadores {
     }
  
     
-    public boolean DFS(int indice, int vertice, GrafoMatriz grafo, String palabra, boolean[] visitado){
+    public boolean DFS(int indice, int vertice, GrafoMatriz grafo, String palabra, boolean[] visitado) {
         if (indice == palabra.length()) {
-            return true;
+            return true; // Palabra completa encontrada - ¡NO resetear visitados!
         }
 
         visitado[vertice] = true;
 
-        char siguienteLetra = palabra.charAt(indice);
+        char siguienteLetra = palabra.charAt(indice); // ¡Error! Debería ser charAt(indice)
+        boolean encontrado = false; // Bandera para controlar backtracking
 
         for (int vecino = 0; vecino < GrafoMatriz.N_VERTICES; vecino++) {
             if (grafo.getMatrizAdyacencia()[vertice][vecino] && !visitado[vecino]) {
                 if (grafo.getLetra(vecino) == siguienteLetra) {
-                    if (DFS(indice + 1, vecino, grafo, palabra, visitado)) {
-                        return true;
-                    }
+                    encontrado = DFS(indice + 1, vecino, grafo, palabra, visitado);
+                    if (encontrado) return true; // Si se encontró, terminar sin reset
                 }
             }
         }
-        
-        visitado[vertice] = false; 
-        
+
+        // Solo hacer backtrack si NO se encontró solución
+        if (!encontrado) {
+            visitado[vertice] = false; // Liberar celda para otros caminos
+        }
+
         return false;
     }
     
