@@ -4,8 +4,6 @@
  */
 package Estructuras_de_datos;
 
-import static Estructuras_de_datos.GrafoMatriz.N_COLUMNAS;
-
 /**
  *
  * @author luismarianolovera y Diego Linares

@@ -10,7 +10,6 @@ import Estructuras_de_datos.GrafoMatriz;
 import Estructuras_de_datos.ListaSimple;
 import javax.swing.JLabel;
 import java.io.File;
-import javax.swing.JTextArea;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -24,8 +23,6 @@ public class Interfaz1 extends javax.swing.JFrame {
     private ProcesadorArchivo procesador;
     private GrafoMatriz grafo;
     private Buscadores buscador;
-    private JLabel labelTiempo;
-    private JTextArea Resultados;
     
 
     
@@ -232,6 +229,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         establecerBusqueda.setBounds(400, 430, 90, 30);
 
         verPalabrasEncontradas.setColumns(20);
+        verPalabrasEncontradas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         verPalabrasEncontradas.setRows(5);
         jScrollPane2.setViewportView(verPalabrasEncontradas);
 
@@ -444,7 +442,20 @@ public class Interfaz1 extends javax.swing.JFrame {
 
     private void reiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reiniciarActionPerformed
         // TODO add your handling code here:
-        //Reinicia los atributos y JTextField para empezar de nuevo sin necesidad de cerrrar y abrir la interfaz nuevamente. 
+        //Reinicia los atributos y campos de texto.
+        procesador.reiniciar();
+        verDiccionario.setText("");
+        verPalabrasEncontradas.setText("");
+        palabraIngresada.setText("");
+        jLabel5.setText("El tiempo de búsuqeda fue de X segundos.");
+        
+        for(int i=0; i < 4; i++){
+            for(int j=0; j < 4; j++){
+                tablero[i][j].setText("");
+            }
+        }
+        
+        JOptionPane.showMessageDialog(null, "Sopa de letra reiniciada exitosamente.");
     }//GEN-LAST:event_reiniciarActionPerformed
 
     private void busquedaEspecificaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaEspecificaActionPerformed
