@@ -18,7 +18,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * Descripción de la clase: 
  */
 public class Interfaz1 extends javax.swing.JFrame {
-    private JLabel[][] tablero; //simula el tablero como una matriz de JLabels
+    private JLabel[][] tablero;
     private ProcesadorArchivo procesador;
     private GrafoMatriz grafo;
     private Buscadores buscador;
@@ -396,7 +396,6 @@ public class Interfaz1 extends javax.swing.JFrame {
     private void busquedaGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaGeneralActionPerformed
         // TODO add your handling code here:
         //Búsqueda automática hecha por el método de búsqueda seleccionado para hallar las palabras del tablero.  
-        grafo.imprimirAdyacencias();
         try{
             if(tablero[0][0].getText() == "" || procesador.getDiccionario().esVacia() || grafo == null){
                 throw new Exception();

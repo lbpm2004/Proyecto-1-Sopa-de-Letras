@@ -6,7 +6,7 @@ package Estructuras_de_datos;
 
 /**
  * Implementación de una pila que almacena datos de tipo T.
- * @author tu_nombre
+ * @author Luis Peña
  */
 public class Pila<T> {
     private NodoSimple<T> tope;

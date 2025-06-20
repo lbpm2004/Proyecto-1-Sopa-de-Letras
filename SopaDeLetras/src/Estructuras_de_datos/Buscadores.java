@@ -7,6 +7,7 @@ package Estructuras_de_datos;
 /**
  *
  * @author luismarianolovera
+ * @colaborador Luis Peña
  */
 public class Buscadores {
     private GrafoMatriz grafo;
@@ -43,8 +44,8 @@ public class Buscadores {
         char primeraLetra = palabra.charAt(0);
         char[][] tablero = grafo.getCeldaTablero();
 
-        for (int i = 0; i < GrafoMatriz.N_FILAS; i++) { //número de filas
-            for (int j = 0; j < GrafoMatriz.N_COLUMNAS; j++) { //número de columnas
+        for (int i = 0; i < GrafoMatriz.N_FILAS; i++) { 
+            for (int j = 0; j < GrafoMatriz.N_COLUMNAS; j++) { 
                 if (tablero[i][j] == primeraLetra) {
                     int verticeInicial = i * GrafoMatriz.N_COLUMNAS + j;
                     ListaSimple<Integer> celdasUsadas = new ListaSimple();
@@ -61,7 +62,6 @@ public class Buscadores {
         
     private boolean bfsDesdeVertice(int verticeInicial, String palabra, ListaSimple celdasUsadas) {
         Cola<Integer> cola = new Cola<>();
-        //ListaSimple<Integer> celdasUsadas = new ListaSimple();
         cola.encolar(verticeInicial);
         celdasUsadas.insertarAlFinal(verticeInicial);
         int letraActual = 1;

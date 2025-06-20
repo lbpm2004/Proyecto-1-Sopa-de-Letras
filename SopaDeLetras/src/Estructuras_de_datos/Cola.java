@@ -6,7 +6,7 @@ package Estructuras_de_datos;
 
 /**
  *
- * @author Personal
+ * @author Luis Peña
  */
 public class Cola<T> {
     private NodoSimple<T> front;

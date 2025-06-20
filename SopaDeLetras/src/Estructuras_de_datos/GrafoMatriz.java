@@ -82,20 +82,6 @@ public class GrafoMatriz {
         }
     }
     
-    public void imprimirAdyacencias() {
-        for (int i = 0; i < 16; i++) {
-            int fila = i / 4;
-            int col = i % 4;
-            System.out.print("Celda (" + fila + "," + col + "): ");
-            for (int j = 0; j < 16; j++) {
-                if (matrizAdyacencia[i][j]) {
-                    System.out.print(j + " ");
-                }
-            }
-            System.out.println();
-        }
-    }
-    
     public char[][] getCeldaTablero(){
         return celdaTablero;
     }
