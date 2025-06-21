@@ -17,11 +17,14 @@ public class ProcesadorArchivo {
     private ListaSimple diccionario; //Almacena las palabras del archivo TXT.
     private char[][] tableroLetras; //Matriz de caracteres con las letras del archivo TXT. 
     private int indiceDicFin; //Indica el índice donde termina el diccionario para una variable de tipo []String que almacena toda la información del archivo TXT.
+    private char[] letrasPermitidas;
     
     public ProcesadorArchivo() {
         this.diccionario = new ListaSimple(); //Lista simplemente enlazada vacía.
         this.tableroLetras = new char[4][4]; //Matriz 4x4 vacía.
         this.indiceDicFin = -1; //Valor predeterminado.
+        this.letrasPermitidas= new char[]{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z',
+        'A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
     }
     
     public String leerArchivo(File archivoSeleccionado) {
@@ -103,7 +106,15 @@ public class ProcesadorArchivo {
         for (int i = 1; i < indiceDicFin; i++) {
             if (lineas[i].length()>=3){
                 for (int j = 0; j < lineas[i].length(); j++) {
-                    if (!Character.isLetter(lineas[i].charAt(j))){ //Valida que la letra [j] de la palabra [i] sea válida.
+                    boolean letraValida=false;
+                    char letraPalabra=lineas[i].charAt(j);
+                    for (int k = 0; k < letrasPermitidas.length; k++) {
+                        if (letraPalabra==letrasPermitidas[k]){
+                            letraValida=true;
+                            break;   
+                        }
+                    }
+                    if (letraValida==false){
                         JOptionPane.showMessageDialog(null, "Las palabras del archivo contienen caracteres inválidos.", "Error", JOptionPane.ERROR_MESSAGE);
                         return false;
                     }
@@ -118,8 +129,6 @@ public class ProcesadorArchivo {
     
     public boolean validarLetras(String[] lineas){
         String[] letras=lineas[indiceDicFin+2].split(",");
-        char[] letrasValidas={'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z',
-            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
         
         if (letras.length!=16){
             JOptionPane.showMessageDialog(null, "El archivo debe contener exactamente 16 letras para la formación del tablero.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -134,8 +143,8 @@ public class ProcesadorArchivo {
             }
           
             boolean letraValida=false;
-            for (int j = 0; j < letrasValidas.length; j++) {
-                if (letra.charAt(0)==letrasValidas[j]){
+            for (int j = 0; j < letrasPermitidas.length; j++) {
+                if (letra.charAt(0)==letrasPermitidas[j]){
                     letraValida=true;
                     break;
                 }   
