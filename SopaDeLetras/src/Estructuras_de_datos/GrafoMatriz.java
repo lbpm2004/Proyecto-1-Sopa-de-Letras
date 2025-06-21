@@ -82,11 +82,11 @@ public class GrafoMatriz {
         }
     }
                 
-    public char[][] getTablero(){ //revisar
+    public char[][] getTablero(){ 
         return tablero;
     }
 
-    public boolean[][] getMatrizAdyacencia() { //revisar
+    public boolean[][] getMatrizAdyacencia() { 
         return matrizAdyacencia;
     }
     

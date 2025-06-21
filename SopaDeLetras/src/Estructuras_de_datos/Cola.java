@@ -51,6 +51,20 @@ public class Cola<T> {
         tamaño --;
     }
     
+    public T desencolarDato() {
+        if (this.esVacia()) {
+            return null;
+        }
+       
+        T dato = front.getDato();
+        front = front.getNext();
+        tamaño--; 
+        if(this.esVacia()){
+            back = null; 
+        }
+        return dato;
+    }
+    
     public String mostrarCola(){
         String cadena="";
         NodoSimple aux = front;
@@ -85,6 +99,5 @@ public class Cola<T> {
     public void setTamaño(int tamaño) {
         this.tamaño = tamaño;
     }
-    
-    
+
 }

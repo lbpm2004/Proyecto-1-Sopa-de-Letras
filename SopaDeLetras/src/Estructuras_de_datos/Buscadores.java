@@ -6,7 +6,8 @@ package Estructuras_de_datos;
 
 /**
  *
- * @author luismarianolovera y Diego Linares
+ * @author luismarianolovera
+ * @Colaboradores Diego Linares y Luis Peña
  */
 public class Buscadores {
     private int filaRecorrido;
@@ -195,11 +196,84 @@ public class Buscadores {
         }
         return encontradas;
     }
+
+    /**
+     * Realiza BFS y retorna el camino de la palabra (ListaSimple de vértices).
+     */
+    public ListaSimple<Integer> BFSConCamino(int inicio, String palabra, GrafoMatriz grafo) {
+        boolean[] visitados = new boolean[GrafoMatriz.N_VERTICES];
+        int[] padres = new int[GrafoMatriz.N_VERTICES];
+        for (int i = 0; i < padres.length; i++) padres[i] = -1;
+
+        Cola<Integer> cola = new Cola<>();
+        visitados[inicio] = true;
+        cola.encolar(inicio);
+        padres[inicio] = -1;
+
+        int nivel = 0; // Posición actual en la palabra
+        boolean encontrada = false;
+        int fin = -1;
+
+        while (!cola.esVacia() && nivel < palabra.length()) {
+            int size = cola.getTamaño();
+
+            for (int i = 0; i < size; i++) {
+                int vertice = cola.desencolarDato();
+                char letraActual = palabra.charAt(nivel);
+
+                // Verificar coincidencia de letra
+                if (grafo.getLetra(vertice) != letraActual) {
+                    continue;
+                }
+
+                // Palabra completa?
+                if (nivel == palabra.length() - 1) {
+                    encontrada = true;
+                    fin = vertice;
+                    break;
+                }
+
+                // Explorar vecinos
+                for (int vecino = 0; vecino < GrafoMatriz.N_VERTICES; vecino++) {
+                    if (grafo.getMatrizAdyacencia()[vertice][vecino] && !visitados[vecino]) {
+                        visitados[vecino] = true;
+                        cola.encolar(vecino);
+                        padres[vecino] = vertice;
+                    }
+                }
+            }
+
+            if (encontrada) {
+                break;
+            }
+            nivel++;
+        }
+
+        // 3. Reconstruir camino si se encontró
+        if (encontrada) {
+            return reconstruirCamino(padres, inicio, fin);
+        }
+        return new ListaSimple<>(); // Camino vacío
+    }
+
+    /**
+     * 
+     */
+    private ListaSimple<Integer> reconstruirCamino(int[] padres, int inicio, int fin) {
+        Pila<Integer> pila = new Pila<>(); 
+
+        // Reconstruir de fin a inicio
+        int actual = fin;
+        while (actual != -1) {
+            pila.apilar(actual);
+            actual = padres[actual];
+        }
+
+        // desapilar para obtener inicio->fin
+        ListaSimple<Integer> camino = new ListaSimple<>();
+        while (!pila.esVacia()) {
+            camino.insertarAlFinal(pila.desapilar());
+        }
+        return camino;
+    }  
 }
-        
-    
-        
-        
-        
-        
-  

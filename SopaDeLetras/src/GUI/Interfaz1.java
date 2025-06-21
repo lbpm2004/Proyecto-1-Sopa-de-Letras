@@ -404,7 +404,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         
         try{
             if(tablero[0][0].getText().isEmpty() || procesador.getDiccionario().esVacia() || grafo == null){
-                throw new Exception();
+                throw new Exception("Primero carga un archivo para usar esta función.");
             }
             long empezarTiempo = System.currentTimeMillis(); // Inicia el cronómetro
             ListaSimple<String> palabrasEncontradas;
@@ -427,7 +427,7 @@ public class Interfaz1 extends javax.swing.JFrame {
             jLabel5.setText("El tiempo total de búsqueda fue de " + tiempo + " milisegundos.");
             
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Primero carga un archivo para usar esta función.");
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
                
     }//GEN-LAST:event_busquedaGeneralActionPerformed
@@ -461,21 +461,49 @@ public class Interfaz1 extends javax.swing.JFrame {
     private void busquedaEspecificaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaEspecificaActionPerformed
         // TODO add your handling code here:
         //Búsqueda específica hecha siempre con el método de búsqueda BFS
-        try{
+        try {
             String palabra = palabraIngresada.getText().toUpperCase();
             
-            if(tablero[0][0].getText().equals("") || procesador.getDiccionario().esVacia() || grafo == null){
-                throw new Exception("Primero carga un archivo para usar esta función");
+            if(tablero[0][0].getText().isEmpty() || procesador.getDiccionario().esVacia() || grafo == null){
+                throw new Exception("Debes cargar un archivo TXT para usar esta función.");
             }else if(palabra.length() < 3){
-                throw new Exception("Debes ingresar una palabra válida (al menos 3 letras).");
+                throw new Exception("La palabra ingresada debe tener mínimo 3 letras.");
             }
             
-            // buscador.DFS(); //Implementar
-            //Si la encuentra agregar "palabra" al diccionario.
-            
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        } 
+            // Buscar primera letra
+            int verticeInicial = -1;
+            char primeraLetra = palabra.charAt(0);
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    if (grafo.getTablero()[i][j] == primeraLetra) {
+                        verticeInicial = i * 4 + j;
+                        break;
+                    }
+                }
+            }
+
+            if (verticeInicial == -1) {
+                JOptionPane.showMessageDialog(this, "Primera letra no encontrada.");
+                return;
+            }
+
+            // Realizar BFS y obtener camino
+            ListaSimple<Integer> camino = buscador.BFSConCamino(verticeInicial, palabra, grafo);
+
+            if (!camino.esVacia()) {
+                // Agregar palabra al diccionario
+                procesador.getDiccionario().insertarAlFinal(palabra);
+                verDiccionario.setText(verDiccionario.getText() + "\n" + palabra);
+
+                // Mostrar árbol BFS
+                VisualizadorArbolBFS visualizador = new VisualizadorArbolBFS();
+                visualizador.mostrarArbol(grafo, camino);
+            }else {
+                JOptionPane.showMessageDialog(this, "Palabra no encontrada");
+            }
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_busquedaEspecificaActionPerformed
     
     private void cargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarActionPerformed
