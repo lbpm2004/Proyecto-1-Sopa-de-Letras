@@ -402,9 +402,15 @@ public class Interfaz1 extends javax.swing.JFrame {
         //Búsqueda automática hecha por el método de búsqueda seleccionado para hallar las palabras del tablero.
         
         try{
-            if(tablero[0][0].getText().isEmpty() || procesador.getDiccionario().esVacia() || grafo == null){
+            if(tablero[0][0].getText().isEmpty()){
                 throw new Exception("Primero carga un archivo para usar esta función.");
             }
+            
+            if(verDiccionario.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "No hay palabras en el diccionario.", "Error", JOptionPane.ERROR_MESSAGE);    
+                return;
+            }
+            
             long empezarTiempo = System.currentTimeMillis(); // Inicia el cronómetro
             ListaSimple<String> palabrasEncontradas;
             String metodo = (String) establecerBusqueda.getSelectedItem();
@@ -463,7 +469,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         try{
             String palabra = palabraIngresada.getText().toUpperCase().trim();
             
-            if(tablero[0][0].getText().isEmpty() || procesador.getDiccionario().esVacia() || grafo == null){
+            if(tablero[0][0].getText().isEmpty()){
                 JOptionPane.showMessageDialog(null, "No hay ningún archivo cargado", "Error", JOptionPane.ERROR_MESSAGE);    
             return;
         }
@@ -491,6 +497,10 @@ public class Interfaz1 extends javax.swing.JFrame {
     private void cargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarActionPerformed
         // TODO add your handling code here:
         try{
+            if(!tablero[0][0].getText().isEmpty()){
+                throw new Exception("Presiona el botón reiniciar para cargar otro archivo TXT.");
+            }
+            
             CargarArchivoTXT();
             grafo = new GrafoMatriz(procesador.getTableroLetras()); //Recibe una matriz 4x4 de caracteres.
             grafo.construirGrafo();
