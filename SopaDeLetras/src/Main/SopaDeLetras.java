@@ -8,11 +8,8 @@ import GUI.Interfaz1;
 /**
  * Clase principal que inicia la aplicación de Sopa de Letras.
  * Contiene el método main que muestra la interfaz gráfica principal.
- * Proyecto desarrollado para el curso de Estructuras de Datos (EDD).
  * 
- * @author Luis Peña
- * @author Luis Lovera
- * @author Diego Linares
+ * @author Luis Peña, luismarianolovera, Diego Linares
  */
 public class SopaDeLetras {
     

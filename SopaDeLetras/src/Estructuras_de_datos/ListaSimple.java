@@ -5,30 +5,50 @@
 package Estructuras_de_datos;
 
 /**
+ * Implementación de una lista simplemente enlazada genérica.
+ * Permite operaciones básicas como inserción al final, verificación de vacío,
+ * vaciado de lista y representación en cadena de caracteres.
+ * 
+ * @param <T> Tipo genérico de los elementos almacenados en la lista
  * @author Luis Peña
- * Descripción de la clase: Lista simplemente enlazada que almacena datos de tipo NodoSimple.
  */
 public class ListaSimple<T> {
     private NodoSimple first;
     private NodoSimple last;
     private int tamaño;
-
+    
+    /**
+     * Constructor que inicializa una lista vacía.
+     */
     public ListaSimple() {
         this.first = null;
         this.last = null;
         this.tamaño = 0;
     }
     
+    /**
+     * Verifica si la lista está vacía.
+     * 
+     * @return true si la lista no contiene elementos, false en caso contrario
+     */
     public boolean esVacia(){
         return first == null;
     }
     
+    /**
+     * Vacía la lista, eliminando todos sus elementos.
+     */
     public void vaciar(){
         first=null;
         last=null;
         tamaño=0;
     }
     
+    /**
+     * Inserta un nuevo elemento al final de la lista.
+     * 
+     * @param newDato Elemento a insertar
+     */
     public void insertarAlFinal(T newDato){
         NodoSimple aux = new NodoSimple(newDato);
         
@@ -41,6 +61,12 @@ public class ListaSimple<T> {
         tamaño++;        
     }
     
+    /**
+     * Genera una representación en cadena de todos los elementos de la lista.
+     * Cada elemento se muestra en una línea separada.
+     * 
+     * @return Cadena con los elementos de la lista separados por saltos de línea
+     */
     public String mostrarLista(){
         String cadena="";
         NodoSimple aux=first;
@@ -51,7 +77,11 @@ public class ListaSimple<T> {
         }
         return cadena;
     } 
-
+    
+    /**
+     * Getters y Setters 
+     */
+    
     public NodoSimple getFirst() {
         return first;
     }
