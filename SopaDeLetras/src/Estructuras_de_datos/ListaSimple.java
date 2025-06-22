@@ -51,6 +51,18 @@ public class ListaSimple<T> {
         }
         return cadena;
     } 
+    
+    public boolean contieneDato(String dato) {
+        NodoSimple actual=first;
+    
+        while (actual!=null) {
+            if (actual.getDato().equals(dato)) {
+                return true;
+            }
+            actual=actual.getNext();
+        }
+    return false;
+    }   
 
     public NodoSimple getFirst() {
         return first;

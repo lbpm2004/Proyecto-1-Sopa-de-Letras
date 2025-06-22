@@ -8,7 +8,6 @@ import Estructuras_de_datos.Buscadores;
 import Estructuras_de_datos.ProcesadorArchivo;
 import Estructuras_de_datos.GrafoMatriz;
 import Estructuras_de_datos.ListaSimple;
-import GUI.VisualizadorArbolBFS;
 import javax.swing.JLabel;
 import java.io.File;
 import javax.swing.JFileChooser;
@@ -60,29 +59,34 @@ public class Interfaz1 extends javax.swing.JFrame {
     /**
      * Permite al usuario escoger un archivo y cargarlo. Después mostrará las palabras del diccionario en el "textArea#" y llamará al método GenerarTablero(). 
      */
-    public void CargarArchivoTXT() {
+    public boolean CargarArchivoTXT() {
         try{
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto (*.txt)", "txt"));
 
             int result = fileChooser.showOpenDialog(this);
-
+            
             if (result == JFileChooser.APPROVE_OPTION) {
                 File archivoSeleccionado = fileChooser.getSelectedFile();
-            
+      
             
                 if (archivoSeleccionado==null){
                     JOptionPane.showMessageDialog(null, "No seleccionaste ningún archivo.","Error",JOptionPane.ERROR_MESSAGE);
-                    return;   
+                    return false;   
                 }
              
                 if (procesador.procesarArchivo(archivoSeleccionado)==true) {
                     JOptionPane.showMessageDialog(null, "Archivo cargado con éxito.");
+                    return true;
                 }
+            }else{
+                return false;
             }
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "Ocurrió un error. Intenta de nuevo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);    
+            return false;
         }
+        return false;
     }
        
     /**
@@ -175,7 +179,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Diccionario");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(170, 120, 150, 22);
+        jLabel2.setBounds(170, 120, 150, 20);
 
         verDiccionario.setColumns(20);
         verDiccionario.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -189,7 +193,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Tablero");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(760, 120, 80, 22);
+        jLabel3.setBounds(760, 120, 80, 20);
 
         cargar.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         cargar.setText("Cargar archivo");
@@ -245,7 +249,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel6.setText("Rellene el campo vacío con la palabra que desea buscar en el tablero");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(270, 670, 550, 22);
+        jLabel6.setBounds(270, 670, 550, 20);
 
         palabraIngresada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -267,6 +271,11 @@ public class Interfaz1 extends javax.swing.JFrame {
 
         guardarPalabraDiccionario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         guardarPalabraDiccionario.setText("Guardar Diccionario");
+        guardarPalabraDiccionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarPalabraDiccionarioActionPerformed(evt);
+            }
+        });
         getContentPane().add(guardarPalabraDiccionario);
         guardarPalabraDiccionario.setBounds(90, 810, 190, 40);
 
@@ -452,7 +461,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         verDiccionario.setText("");
         verPalabrasEncontradas.setText("");
         palabraIngresada.setText("");
-        jLabel5.setText("El tiempo de búsuqeda fue de X segundos.");
+        jLabel5.setText("El tiempo de búsqueda fue de 'X' segundos.");
         
         for(int i=0; i < 4; i++){
             for(int j=0; j < 4; j++){
@@ -470,22 +479,38 @@ public class Interfaz1 extends javax.swing.JFrame {
             String palabra = palabraIngresada.getText().toUpperCase().trim();
             
             if(tablero[0][0].getText().isEmpty()){
-                JOptionPane.showMessageDialog(null, "No hay ningún archivo cargado", "Error", JOptionPane.ERROR_MESSAGE);    
+                JOptionPane.showMessageDialog(null, "No hay ningún archivo cargado", "Error", JOptionPane.ERROR_MESSAGE);  
+                palabraIngresada.setText("");
             return;
         }
 
             if (procesador.validarPalabras(palabra, false)==false){
             return;
         }
-
+            long empezarTiempo = System.currentTimeMillis(); // Inicia el cronómetro
             ListaSimple<Integer> camino = buscador.BFSConCamino(palabra, grafo);
  
             if (!camino.esVacia()) {
-                procesador.getDiccionario().insertarAlFinal(palabra);
-                MostrarDiccionario();
-
+                if (!procesador.getDiccionario().contieneDato(palabra)) {
+                    procesador.getDiccionario().insertarAlFinal(palabra);
+                    MostrarDiccionario();
+                }
+                
+                String textoActual = verPalabrasEncontradas.getText();
+                if (!textoActual.contains(palabra)) {
+                    if (!textoActual.isEmpty() && !textoActual.endsWith("\n")) {
+                        textoActual += "\n";
+                    }
+                    verPalabrasEncontradas.setText(textoActual + palabra);
+                }
+                
+                long terminarTiempo = System.currentTimeMillis(); // Finaliza el cronómetro
+                JOptionPane.showMessageDialog(null, "La palabra fue encontrada.\nSe ha agregado al diccionario y a la lista de palabras encontradas.");
                 VisualizadorArbolBFS visualizador = new VisualizadorArbolBFS();
                 visualizador.mostrarArbolCompleto(grafo, camino);
+                palabraIngresada.setText("");
+                long tiempo = terminarTiempo - empezarTiempo;
+                jLabel5.setText("El tiempo total de búsqueda fue de " + tiempo + " milisegundos.");
             }else {
                 JOptionPane.showMessageDialog(null, "Palabra no encontrada");
         }
@@ -501,7 +526,10 @@ public class Interfaz1 extends javax.swing.JFrame {
                 throw new Exception("Presiona el botón reiniciar para cargar otro archivo TXT.");
             }
             
-            CargarArchivoTXT();
+            boolean cargado=CargarArchivoTXT();
+            if (cargado==false){
+                return;
+            }
             grafo = new GrafoMatriz(procesador.getTableroLetras()); //Recibe una matriz 4x4 de caracteres.
             grafo.construirGrafo();
             MostrarTablero();
@@ -510,6 +538,25 @@ public class Interfaz1 extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error:" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }   
     }//GEN-LAST:event_cargarActionPerformed
+
+    private void guardarPalabraDiccionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarPalabraDiccionarioActionPerformed
+        // TODO add your handling code here:
+        try {
+            JFileChooser file = new javax.swing.JFileChooser();
+            file.showSaveDialog(this);
+            File guarda=file.getSelectedFile();
+            
+            if (guarda !=null){
+                if(!guarda.getName().toLowerCase().endsWith(".txt")) {
+                    guarda = new File(guarda.getAbsolutePath() + ".txt");
+                }
+
+                procesador.guardarDiccionario(guarda);
+            }
+        } catch(Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, "No se pudo guardar el archivo\n" + ex, "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_guardarPalabraDiccionarioActionPerformed
  
     /**
      * @param args the command line arguments

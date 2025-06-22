@@ -28,7 +28,6 @@ public class Buscadores {
     
     public int establecerVerticeInicial(GrafoMatriz grafo, String palabraObjetivo) {
         char[][] tablero = grafo.getTablero();
-        int N_FILAS = GrafoMatriz.N_FILAS;
         int N_COLUMNAS = GrafoMatriz.N_COLUMNAS;
         char letraInicial = palabraObjetivo.charAt(0);
         int vertice=-1;

@@ -7,6 +7,7 @@ package Estructuras_de_datos;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,6 +19,7 @@ public class ProcesadorArchivo {
     private char[][] tableroLetras; //Matriz de caracteres con las letras del archivo TXT. 
     private int indiceDicFin; //Indica el índice donde termina el diccionario para una variable de tipo []String que almacena toda la información del archivo TXT.
     private char[] letrasPermitidas;
+    private String[] letrasArchivo;
     
     public ProcesadorArchivo() {
         this.diccionario = new ListaSimple(); //Lista simplemente enlazada vacía.
@@ -25,6 +27,7 @@ public class ProcesadorArchivo {
         this.indiceDicFin = -1; //Valor predeterminado.
         this.letrasPermitidas= new char[]{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z',
         'A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+        this.letrasArchivo=null;
     }
     
     public String leerArchivo(File archivoSeleccionado) {
@@ -143,15 +146,15 @@ public class ProcesadorArchivo {
     }
     
     public boolean validarLetrasTablero(String[] lineas){
-        String[] letras=lineas[indiceDicFin+2].split(",");
+        letrasArchivo=lineas[indiceDicFin+2].split(",");
         
-        if (letras.length!=16){
+        if (letrasArchivo.length!=16){
             JOptionPane.showMessageDialog(null, "El archivo debe contener exactamente 16 letras para la formación del tablero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
    
-        for (int i = 0; i < letras.length; i++) {
-            String letra=letras[i].trim();
+        for (int i = 0; i < letrasArchivo.length; i++) {
+            String letra=letrasArchivo[i].trim();
             if (letra.length()!=1){
             JOptionPane.showMessageDialog(null, "El archivo contiene más de 16 letras para el tablero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -180,11 +183,10 @@ public class ProcesadorArchivo {
     }
     
     public void generarTablero (String[] lineas){
-        String[] letras=lineas[indiceDicFin+2].split(",");
         int identificador=0;
         for (int i = 0; i < tableroLetras.length; i++) {
             for (int j = 0; j < tableroLetras.length; j++) {
-                tableroLetras[i][j]=letras[identificador].toUpperCase().charAt(0);
+                tableroLetras[i][j]=letrasArchivo[identificador].toUpperCase().charAt(0);
                 identificador++;
             }
             
@@ -214,6 +216,30 @@ public class ProcesadorArchivo {
             return false;
         }
         return true;
+    }
+    
+    public void guardarDiccionario(File archivoSeleccionado){
+        try{
+            if (diccionario ==null || diccionario.esVacia()) {
+                JOptionPane.showMessageDialog(null, "No hay palabras en el diccionario para guardar.","Error",JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            PrintWriter pw = new PrintWriter(archivoSeleccionado);
+            pw.println("dic");
+            NodoSimple actual = diccionario.getFirst();
+            while (actual != null) {
+                pw.println(actual.getDato());
+                actual = actual.getNext();
+            }
+            pw.println("/dic");
+            pw.println("tab");
+            pw.println(String.join(",", letrasArchivo)); // Usar el string original
+            pw.println("/tab");
+            pw.close();
+            JOptionPane.showMessageDialog(null, "Diccionario guardado exitosamente.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar el archivo: " + e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     public void reiniciar(){
