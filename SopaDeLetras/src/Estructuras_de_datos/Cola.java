@@ -6,7 +6,8 @@ package Estructuras_de_datos;
 
 /**
  *
- * @author diego
+ * @author Diego Linares
+ * @colaborator Luis Peña
  */
 public class Cola<T> {
     private NodoSimple<T> front;
@@ -50,7 +51,9 @@ public class Cola<T> {
         }
         tamaño --;
     }
-    
+    /**
+     *
+    */
     public T desencolarDato() {
         if (this.esVacia()) {
             return null;

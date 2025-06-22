@@ -18,10 +18,12 @@ import Estructuras_de_datos.Cola;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Visualizador gráfico del árbol BFS generado durante la búsqueda en la sopa de letras.
+ * Utiliza la biblioteca GraphStream para representar visualmente el grafo y resaltar el camino encontrado.
+ * 
  * @author Luis Peña
+ * @author Luis Mariano Lovera
  */
-
 public class VisualizadorArbolBFS {
     private final Graph graph;
     private final String stylesheet =
@@ -46,7 +48,13 @@ public class VisualizadorArbolBFS {
         "  fill-color: #27AE60;\n" +
         "  size: 3px;\n" +
         "}\n";
-
+    
+    /**
+     * Constructor que inicializa el visualizador con configuración básica:
+     * - Establece el renderizador como Swing
+     * - Crea un grafo vacío con estilos predefinidos
+     * - Configura calidad de visualización
+     */
     public VisualizadorArbolBFS() {
         System.setProperty("org.graphstream.ui", "swing");
         graph = new SingleGraph("Árbol BFS");
@@ -54,7 +62,14 @@ public class VisualizadorArbolBFS {
         graph.setAttribute("ui.quality", true);
         graph.setAttribute("ui.antialias", true);
     }
-
+    
+    /**
+     * Construye el árbol BFS a partir de un nodo raíz en el grafo.
+     * 
+     * @param raiz Índice del nodo raíz para la búsqueda BFS
+     * @param grafo GrafoMatriz que contiene la estructura de adyacencia
+     * @return Arreglo de padres donde padresTree[i] = padre del nodo i
+     */
     private int[] construccionArbol(int raiz, GrafoMatriz grafo) {
         int N = GrafoMatriz.N_VERTICES;
         boolean[] visited = new boolean[N];
@@ -81,7 +96,14 @@ public class VisualizadorArbolBFS {
         }
         return padresTree;
     }
-
+    
+    /**
+     * Muestra visualmente el árbol BFS completo con el camino encontrado resaltado.
+     * 
+     * @param grafo GrafoMatriz que contiene las letras y conexiones
+     * @param camino Lista simple con los índices de los nodos del camino encontrado
+     * @throws IllegalArgumentException Si el camino está vacío
+     */
     public void mostrarArbolCompleto(GrafoMatriz grafo, ListaSimple<Integer> camino) {
         if (camino.esVacia()) {
             JOptionPane.showMessageDialog(

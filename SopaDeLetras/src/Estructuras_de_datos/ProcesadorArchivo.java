@@ -11,8 +11,14 @@ import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author luismarianolovera
+ * Procesador de archivos para el juego de sopa de letras. Se encarga de:
+ * - Leer y validar archivos de texto con la estructura requerida
+ * - Procesar diccionarios de palabras
+ * - Generar matrices de letras para el tablero
+ * - Validar caracteres permitidos
+ * 
+ * @author Luis Mariano Lovera
+ * @contributor Luis Peña
  */
 public class ProcesadorArchivo {
     private ListaSimple diccionario; //Almacena las palabras del archivo TXT.
@@ -21,6 +27,10 @@ public class ProcesadorArchivo {
     private char[] letrasPermitidas;
     private String[] letrasArchivo;
     
+    /**
+     * Constructor que inicializa las estructuras de datos con valores por defecto.
+     * Define los caracteres permitidos (a-z, A-Z, incluyendo ñ/Ñ).
+     */
     public ProcesadorArchivo() {
         this.diccionario = new ListaSimple(); //Lista simplemente enlazada vacía.
         this.tableroLetras = new char[4][4]; //Matriz 4x4 vacía.
@@ -30,6 +40,12 @@ public class ProcesadorArchivo {
         this.letrasArchivo=null;
     }
     
+    /**
+     * Lee el contenido de un archivo de texto ignorando líneas vacías.
+     * 
+     * @param archivoSeleccionado Archivo a leer
+     * @return Contenido del archivo como String o null si hay error
+     */
     public String leerArchivo(File archivoSeleccionado) {
         String contenido = "";
         try {
@@ -53,10 +69,27 @@ public class ProcesadorArchivo {
         return contenido;
     }
     
+    /**
+     * Divide el contenido del archivo en líneas individuales.
+     * 
+     * @param contenido Texto completo del archivo
+     * @return Arreglo de Strings con cada línea no vacía
+     */
     public String[] adaptadorArchivo (String contenido){
         return contenido.split("\n");
     }
     
+    /**
+     * Valida la estructura básica del archivo según especificaciones:
+     * 1. Debe comenzar con "dic"
+     * 2. Debe contener "/dic"
+     * 3. Debe contener "tab" después del diccionario
+     * 4. Debe contener "/tab" después del tablero
+     * 5. No debe tener contenido después de "/tab"
+     * 
+     * @param lineas Arreglo con las líneas del archivo
+     * @return true si la estructura es válida, false en caso contrario
+     */
     public boolean validarEstructura(String[] lineas){
   
         //1. Validar existencia de "dic"
@@ -105,6 +138,15 @@ public class ProcesadorArchivo {
         return true;
     }
     
+    /**
+     * Valida que una palabra cumpla con:
+     * - Longitud mínima de 3 caracteres
+     * - Contenga solo letras permitidas
+     * 
+     * @param palabra Palabra a validar
+     * @param esArchivo true si la validación es para palabras del archivo
+     * @return true si la palabra es válida
+     */
     public boolean validarPalabras(String palabra, boolean esArchivo){
         if (palabra.length()>=3){
             for (int j = 0; j < palabra.length(); j++) {
@@ -136,6 +178,12 @@ public class ProcesadorArchivo {
         return true;
     }
     
+    /**
+     * Valida todas las palabras del diccionario en el archivo.
+     * 
+     * @param lineas Líneas del archivo
+     * @return true si todas las palabras son válidas
+     */
     public boolean validarDiccionario(String[] lineas){
         for (int i = 1; i < indiceDicFin; i++) {
             if (validarPalabras(lineas[i], true)==false) {
@@ -145,6 +193,14 @@ public class ProcesadorArchivo {
         return true;
     }
     
+    /**
+     * Valida las letras del tablero:
+     * - Exactamente 16 caracteres
+     * - Cada caracter debe ser una letra permitida
+     * 
+     * @param lineas Líneas del archivo
+     * @return true si el tablero es válido
+     */
     public boolean validarLetrasTablero(String[] lineas){
         letrasArchivo=lineas[indiceDicFin+2].split(",");
         
@@ -176,12 +232,22 @@ public class ProcesadorArchivo {
         return true;
     }
     
+    /**
+     * Genera el diccionario a partir de las líneas válidas del archivo.
+     * 
+     * @param lineas Líneas del archivo ya validadas
+     */
     public void generarDiccionario (String [] lineas){
         for (int i = 1; i < indiceDicFin; i++) {
             diccionario.insertarAlFinal(lineas[i].toUpperCase());
         }
     }
     
+    /**
+     * Genera la matriz del tablero a partir de las letras del archivo.
+     * 
+     * @param lineas Líneas del archivo ya validadas
+     */
     public void generarTablero (String[] lineas){
         int identificador=0;
         for (int i = 0; i < tableroLetras.length; i++) {
@@ -193,6 +259,12 @@ public class ProcesadorArchivo {
         }
     }
     
+    /**
+     * Procesa completo un archivo validando estructura, diccionario y tablero.
+     * 
+     * @param archivoSeleccionado Archivo a procesar
+     * @return true si el archivo fue procesado exitosamente
+     */
     public boolean procesarArchivo(File archivoSeleccionado) {
         String contenido = leerArchivo(archivoSeleccionado);
         if (contenido == null){
@@ -218,6 +290,7 @@ public class ProcesadorArchivo {
         return true;
     }
     
+    //falta javadoc!!!
     public void guardarDiccionario(File archivoSeleccionado){
         try{
             if (diccionario ==null || diccionario.esVacia()) {
@@ -242,15 +315,21 @@ public class ProcesadorArchivo {
         }
     }
     
+    /**
+     * Reinicia el procesador vaciando el diccionario y resetando índices.
+     */
     public void reiniciar(){
         diccionario.vaciar();
         indiceDicFin = -1;
     }
     
+    //Getters
+    
     public ListaSimple getDiccionario() {
         return diccionario;
     }
 
+    
     public char[][] getTableroLetras() {
         return tableroLetras;
     }

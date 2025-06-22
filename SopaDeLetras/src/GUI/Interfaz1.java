@@ -15,28 +15,31 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- * @authors Luis Peña, Luis Lovera y Diego Linares.
- * Descripción de la clase: 
+ * Interfaz gráfica para el juego de sopa de letras. Permite cargar archivos de texto,
+ * mostrar el tablero de juego, buscar palabras y visualizar el diccionario de palabras.
+ * 
+ * @author Luis Peña
+ * @author luismarianolovera
+ * @author Diego Linares
  */
 public class Interfaz1 extends javax.swing.JFrame {
-    private JLabel[][] tablero; //simula el tablero como una matriz de JLabels
-    private ProcesadorArchivo procesador;
-    private GrafoMatriz grafo;
-    private Buscadores buscador;
-    
+    private JLabel[][] tablero; // Matriz de JLabels que simula el tablero gráfico.
+    private ProcesadorArchivo procesador; // Procesador de archivos para cargar el tablero y diccionario.
+    private GrafoMatriz grafo; // Grafo para representar relaciones entre letras.
+    private Buscadores buscador; // Instancia de clase Buscadores para buscar palabras en el tablero.
 
-    
     /**
-     * Creates new form NewJFrame
+     * Constructor principal. Inicializa los componentes de la interfaz,
+     * configura el tablero gráfico y establece el método de búsqueda predeterminado (DFS).
      */
     public Interfaz1() {
-        
         initComponents();
         procesador = new ProcesadorArchivo();
         buscador = new Buscadores();
         tablero = new JLabel[4][4];
         establecerBusqueda.setSelectedItem("DFS");
         
+        // Mapeo de JLabels a la matriz tablero.
         tablero[0][0] = Jlabel00;
         tablero[0][1] = Jlabel01;
         tablero[0][2] = Jlabel02;
@@ -53,12 +56,14 @@ public class Interfaz1 extends javax.swing.JFrame {
         tablero[3][1] = Jlabel31;
         tablero[3][2] = Jlabel32;
         tablero[3][3] = Jlabel33;
-        
     }
     
     /**
-     * Permite al usuario escoger un archivo y cargarlo. Después mostrará las palabras del diccionario en el "textArea#" y llamará al método GenerarTablero(). 
+     * Carga un archivo de texto seleccionado por el usuario y lo procesa para extraer
+     * el tablero y el diccionario de palabras.
+     * Muestra mensajes de error si el archivo no es válido o no se selecciona.
      */
+
     public boolean CargarArchivoTXT() {
         try{
             JFileChooser fileChooser = new JFileChooser();
@@ -75,14 +80,14 @@ public class Interfaz1 extends javax.swing.JFrame {
                     return false;   
                 }
              
-                if (procesador.procesarArchivo(archivoSeleccionado)==true) {
+                if (procesador.procesarArchivo(archivoSeleccionado)) {
                     JOptionPane.showMessageDialog(null, "Archivo cargado con éxito.");
                     return true;
                 }
             }else{
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Ocurrió un error. Intenta de nuevo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);    
             return false;
         }
@@ -90,10 +95,11 @@ public class Interfaz1 extends javax.swing.JFrame {
     }
        
     /**
-     * 
+     * Actualiza la interfaz gráfica para mostrar el tablero de letras cargado desde el archivo.
+     * Las letras se toman del procesador y se asignan a los JLabels correspondientes.
      */
-    public void MostrarTablero(){
-        char[][]tableroLetras=procesador.getTableroLetras();
+    public void MostrarTablero() {
+        char[][] tableroLetras = procesador.getTableroLetras();
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero[i].length; j++) {
                 tablero[i][j].setText(Character.toString(tableroLetras[i][j]));
@@ -102,9 +108,10 @@ public class Interfaz1 extends javax.swing.JFrame {
     }
     
     /**
-     * 
+     * Muestra el diccionario de palabras cargado en el componente de texto designado.
+     * Utiliza el método mostrarLista() del diccionario para obtener la representación en String.
      */
-    public void MostrarDiccionario(){
+    public void MostrarDiccionario() {
         verDiccionario.setText(procesador.getDiccionario().mostrarLista());
     }
     
@@ -405,11 +412,15 @@ public class Interfaz1 extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+    * Realiza una búsqueda general de todas las palabras del diccionario en el tablero,
+    * utilizando el método seleccionado (BFS o DFS). Muestra los resultados y el tiempo de ejecución.
+    * 
+    * @param evt Evento de acción del botón.
+    * @throws Exception Si no se ha cargado un archivo previamente o ocurre un error durante la búsqueda.
+    */
     private void busquedaGeneralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaGeneralActionPerformed
-        // TODO add your handling code here:
-        //Búsqueda automática hecha por el método de búsqueda seleccionado para hallar las palabras del tablero.
-        
         try{
             if(tablero[0][0].getText().isEmpty()){
                 throw new Exception("Primero carga un archivo para usar esta función.");
@@ -445,18 +456,32 @@ public class Interfaz1 extends javax.swing.JFrame {
         }
                
     }//GEN-LAST:event_busquedaGeneralActionPerformed
-
+    
+    /**
+    * Método de evento para cambiar el método de búsqueda (BFS/DFS). 
+    * Actualmente no implementa lógica adicional.
+    * 
+    * @param evt Evento de acción del comboBox.
+    */
     private void establecerBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_establecerBusquedaActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_establecerBusquedaActionPerformed
-
+    
+    /**
+    * Método de evento para procesar la palabra ingresada por el usuario.
+    * Actualmente no implementa lógica adicional.
+    * 
+    * @param evt Evento de acción del campo de texto.
+    */
     private void palabraIngresadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_palabraIngresadaActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_palabraIngresadaActionPerformed
-
+    
+    /**
+    * Reinicia el estado de la sopa de letras, limpiando el tablero, diccionario y resultados previos.
+    * 
+    * @param evt Evento de acción del botón.
+    */
     private void reiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reiniciarActionPerformed
-        // TODO add your handling code here:
-        //Reinicia los atributos y campos de texto.
+        
         procesador.reiniciar();
         verDiccionario.setText("");
         verPalabrasEncontradas.setText("");
@@ -471,10 +496,15 @@ public class Interfaz1 extends javax.swing.JFrame {
         
         JOptionPane.showMessageDialog(null, "Sopa de letra reiniciada exitosamente.");
     }//GEN-LAST:event_reiniciarActionPerformed
-
+    
+    /**
+    * Busca una palabra específica en el tablero usando BFS, muestra el camino encontrado
+    * y actualiza el diccionario si la palabra es válida.
+    * 
+    * @param evt Evento de acción del botón.
+    * @throws Exception Si no hay archivo cargado o la palabra no es válida.
+    */
     private void busquedaEspecificaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaEspecificaActionPerformed
-        // TODO add your handling code here:
-
         try{
             String palabra = palabraIngresada.getText().toUpperCase().trim();
             
@@ -519,8 +549,14 @@ public class Interfaz1 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_busquedaEspecificaActionPerformed
     
+    /**
+    * Carga un archivo TXT, inicializa el grafo y muestra el tablero y diccionario.
+    * 
+    * @param evt Evento de acción del botón.
+    * @throws Exception Si ya hay un archivo cargado o ocurre un error al procesar el archivo.
+    */
     private void cargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarActionPerformed
-        // TODO add your handling code here:
+        
         try{
             if(!tablero[0][0].getText().isEmpty()){
                 throw new Exception("Presiona el botón reiniciar para cargar otro archivo TXT.");

@@ -5,12 +5,19 @@
 package Estructuras_de_datos;
 
 /**
- *
+ * Implementación de una estructura de datos Pila (LIFO).
+ * Permite las operaciones básicas de apilar, desapilar y verificación de estado vacío.
+ * 
+ * @param <T> Tipo genérico de los elementos almacenados en la pila
  * @author Luis Peña
  */
 public class Pila<T> {
     private NodoSimple<T> tope;
-
+    
+    public Pila(){
+        this.tope = null;
+    }
+    
     public boolean esVacia() {
         return tope == null;
     }
