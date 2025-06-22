@@ -31,7 +31,7 @@ public class VisualizadorArbolBFS {
      * @param grafo Grafo del tablero.
      * @param camino ListaSimple de vértices en el camino de la palabra (en orden).
      */
-    public void mostrarArbol(GrafoMatriz grafo, ListaSimple<Integer> camino) {
+    public void mostrarArbol(GrafoMatriz grafo, int[] padres, ListaSimple<Integer> camino) {
         graph.clear();
 
         // Caso especial: camino vacío

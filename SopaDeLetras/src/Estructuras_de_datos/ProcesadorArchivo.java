@@ -102,32 +102,47 @@ public class ProcesadorArchivo {
         return true;
     }
     
-    public boolean validarDiccionario(String[] lineas){
-        for (int i = 1; i < indiceDicFin; i++) {
-            if (lineas[i].length()>=3){
-                for (int j = 0; j < lineas[i].length(); j++) {
-                    boolean letraValida=false;
-                    char letraPalabra=lineas[i].charAt(j);
-                    for (int k = 0; k < letrasPermitidas.length; k++) {
-                        if (letraPalabra==letrasPermitidas[k]){
-                            letraValida=true;
-                            break;   
-                        }
-                    }
-                    if (letraValida==false){
-                        JOptionPane.showMessageDialog(null, "Las palabras del archivo contienen caracteres inválidos.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return false;
+    public boolean validarPalabras(String palabra, boolean esArchivo){
+        if (palabra.length()>=3){
+            for (int j = 0; j < palabra.length(); j++) {
+                boolean letraValida=false;
+                char letraPalabra=palabra.charAt(j);
+                for (int k = 0; k < letrasPermitidas.length; k++) {
+                    if (letraPalabra==letrasPermitidas[k]){
+                        letraValida=true;
+                        break;   
                     }
                 }
-            }else{
+                if (letraValida==false){
+                    if (esArchivo==true){
+                        JOptionPane.showMessageDialog(null, "Las palabras del archivo contienen caracteres inválidos.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Las palabra introducida contiene caracteres no permitidos.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    return false;
+                }
+            }
+        }else{
+            if (esArchivo==true){
                 JOptionPane.showMessageDialog(null, "Las palabras del archivo deben tener al menos 3 letras.", "Error", JOptionPane.ERROR_MESSAGE);
-                return false;
-            } 
+            }else{
+                JOptionPane.showMessageDialog(null, "Las palabras introducida debe tener al menos 3 letras.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            return false;
         }
         return true;
     }
     
-    public boolean validarLetras(String[] lineas){
+    public boolean validarDiccionario(String[] lineas){
+        for (int i = 1; i < indiceDicFin; i++) {
+            if (validarPalabras(lineas[i], true)==false) {
+                return false; 
+           }
+        }
+        return true;
+    }
+    
+    public boolean validarLetrasTablero(String[] lineas){
         String[] letras=lineas[indiceDicFin+2].split(",");
         
         if (letras.length!=16){
@@ -186,7 +201,7 @@ public class ProcesadorArchivo {
         
         if (validarEstructura(lineas)==true){
             if (validarDiccionario(lineas)==true){
-                if(validarLetras(lineas)==true){
+                if(validarLetrasTablero(lineas)==true){
                     generarDiccionario(lineas);
                     generarTablero(lineas);
                 }else{
@@ -213,6 +228,5 @@ public class ProcesadorArchivo {
     public char[][] getTableroLetras() {
         return tableroLetras;
     }
- 
     
 }

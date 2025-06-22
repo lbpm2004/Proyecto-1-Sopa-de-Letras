@@ -78,11 +78,11 @@ public class Interfaz1 extends javax.swing.JFrame {
                 if (procesador.procesarArchivo(archivoSeleccionado)==true) {
                     MostrarTablero();
                     MostrarDiccionario();
-                    JOptionPane.showMessageDialog(this, "Archivo cargado con éxito.");
+                    JOptionPane.showMessageDialog(null, "Archivo cargado con éxito.");
                 }
             }
         }catch (Exception e){
-            JOptionPane.showMessageDialog(this, "Ocurrió un error. Intenta de nuevo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);    
+            JOptionPane.showMessageDialog(null, "Ocurrió un error. Intenta de nuevo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);    
         }
     }
        
@@ -427,7 +427,7 @@ public class Interfaz1 extends javax.swing.JFrame {
             jLabel5.setText("El tiempo total de búsqueda fue de " + tiempo + " milisegundos.");
             
         }catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
         }
                
     }//GEN-LAST:event_busquedaGeneralActionPerformed
@@ -460,50 +460,34 @@ public class Interfaz1 extends javax.swing.JFrame {
 
     private void busquedaEspecificaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaEspecificaActionPerformed
         // TODO add your handling code here:
-        //Búsqueda específica hecha siempre con el método de búsqueda BFS
-        try {
-            String palabra = palabraIngresada.getText().toUpperCase();
+        
+        try{
+            String palabra = palabraIngresada.getText().toUpperCase().trim();
             
             if(tablero[0][0].getText().isEmpty() || procesador.getDiccionario().esVacia() || grafo == null){
-                throw new Exception("Debes cargar un archivo TXT para usar esta función.");
-            }else if(palabra.length() < 3){
-                throw new Exception("La palabra ingresada debe tener mínimo 3 letras.");
-            }
-            
-            // Buscar primera letra
-            int verticeInicial = -1;
-            char primeraLetra = palabra.charAt(0);
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    if (grafo.getTablero()[i][j] == primeraLetra) {
-                        verticeInicial = i * 4 + j;
-                        break;
-                    }
-                }
-            }
-
-            if (verticeInicial == -1) {
-                JOptionPane.showMessageDialog(this, "Primera letra no encontrada.");
+                JOptionPane.showMessageDialog(null, "No hay ningún archivo cargado", "Error", JOptionPane.ERROR_MESSAGE);    
                 return;
             }
 
-            // Realizar BFS y obtener camino
-            ListaSimple<Integer> camino = buscador.BFSConCamino(verticeInicial, palabra, grafo);
+            if (procesador.validarPalabras(palabra, false)==false){
+                return;
+            }
+
+            ListaSimple<Integer> camino = buscador.BFSConCamino(palabra, grafo);
+            int[]padres=buscador.getPadresBFS();
 
             if (!camino.esVacia()) {
-                // Agregar palabra al diccionario
                 procesador.getDiccionario().insertarAlFinal(palabra);
-                verDiccionario.setText(verDiccionario.getText() + "\n" + palabra);
-
-                // Mostrar árbol BFS
+                MostrarDiccionario();
+                
                 VisualizadorArbolBFS visualizador = new VisualizadorArbolBFS();
-                visualizador.mostrarArbol(grafo, camino);
+                visualizador.mostrarArbol(grafo, padres, camino);
             }else {
-                JOptionPane.showMessageDialog(this, "Palabra no encontrada");
+                JOptionPane.showMessageDialog(null, "Palabra no encontrada");
             }
-        }catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-        }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }    
     }//GEN-LAST:event_busquedaEspecificaActionPerformed
     
     private void cargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarActionPerformed
