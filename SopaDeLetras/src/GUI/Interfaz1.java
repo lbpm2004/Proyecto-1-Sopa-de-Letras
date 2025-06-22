@@ -8,6 +8,7 @@ import Estructuras_de_datos.Buscadores;
 import Estructuras_de_datos.ProcesadorArchivo;
 import Estructuras_de_datos.GrafoMatriz;
 import Estructuras_de_datos.ListaSimple;
+import GUI.VisualizadorArbolBFS;
 import javax.swing.JLabel;
 import java.io.File;
 import javax.swing.JFileChooser;
@@ -76,8 +77,6 @@ public class Interfaz1 extends javax.swing.JFrame {
                 }
              
                 if (procesador.procesarArchivo(archivoSeleccionado)==true) {
-                    MostrarTablero();
-                    MostrarDiccionario();
                     JOptionPane.showMessageDialog(null, "Archivo cargado con éxito.");
                 }
             }
@@ -460,34 +459,33 @@ public class Interfaz1 extends javax.swing.JFrame {
 
     private void busquedaEspecificaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busquedaEspecificaActionPerformed
         // TODO add your handling code here:
-        
+
         try{
             String palabra = palabraIngresada.getText().toUpperCase().trim();
             
             if(tablero[0][0].getText().isEmpty() || procesador.getDiccionario().esVacia() || grafo == null){
                 JOptionPane.showMessageDialog(null, "No hay ningún archivo cargado", "Error", JOptionPane.ERROR_MESSAGE);    
-                return;
-            }
+            return;
+        }
 
             if (procesador.validarPalabras(palabra, false)==false){
-                return;
-            }
+            return;
+        }
 
             ListaSimple<Integer> camino = buscador.BFSConCamino(palabra, grafo);
-            int[]padres=buscador.getPadresBFS();
-
+ 
             if (!camino.esVacia()) {
                 procesador.getDiccionario().insertarAlFinal(palabra);
                 MostrarDiccionario();
-                
+
                 VisualizadorArbolBFS visualizador = new VisualizadorArbolBFS();
-                visualizador.mostrarArbol(grafo, padres, camino);
+                visualizador.mostrarArbolCompleto(grafo, camino);
             }else {
                 JOptionPane.showMessageDialog(null, "Palabra no encontrada");
-            }
+        }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-        }    
+        }
     }//GEN-LAST:event_busquedaEspecificaActionPerformed
     
     private void cargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarActionPerformed
@@ -496,6 +494,8 @@ public class Interfaz1 extends javax.swing.JFrame {
             CargarArchivoTXT();
             grafo = new GrafoMatriz(procesador.getTableroLetras()); //Recibe una matriz 4x4 de caracteres.
             grafo.construirGrafo();
+            MostrarTablero();
+            MostrarDiccionario();
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "Error:" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }   

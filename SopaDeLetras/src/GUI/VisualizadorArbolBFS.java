@@ -5,12 +5,18 @@
 package GUI;
 
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.view.Viewer;
+
 import Estructuras_de_datos.GrafoMatriz;
 import Estructuras_de_datos.ListaSimple;
 import Estructuras_de_datos.NodoSimple;
+import Estructuras_de_datos.Cola;
+
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author Luis Peña
@@ -18,56 +24,180 @@ import javax.swing.JOptionPane;
 
 public class VisualizadorArbolBFS {
     private final Graph graph;
+    private final String stylesheet =
+        "node {\n" +
+        "  fill-color: #5DADE2;\n" +
+        "  size: 30px;\n" +
+        "  text-mode: normal;\n" +
+        "  text-alignment: center;\n" +
+        "  text-size: 20;\n" +
+        "  text-style: bold;\n"+       
+        "  text-color: #000;\n" +
+        "}\n" +
+        "edge {\n" +
+        "  fill-color: #BBBBBB;\n" +
+        "  arrow-shape: arrow;\n" +
+        "  arrow-size: 10px, 6px;\n" +
+        "}\n" +
+        "node.highlight {\n" +
+        "  fill-color: #F39C12;\n" +
+        "}\n" +
+        "edge.path {\n" +
+        "  fill-color: #27AE60;\n" +
+        "  size: 3px;\n" +
+        "}\n";
 
     public VisualizadorArbolBFS() {
         System.setProperty("org.graphstream.ui", "swing");
-        graph = new SingleGraph("Árbol de Recorrido BFS");
-        graph.setAttribute("ui.stylesheet", 
-            "node { fill-color: #FF9F00; size: 30px; text-size: 20; }");
+        graph = new SingleGraph("Árbol BFS");
+        graph.setAttribute("ui.stylesheet", stylesheet);
+        graph.setAttribute("ui.quality", true);
+        graph.setAttribute("ui.antialias", true);
     }
 
-    /**
-     * Muestra el árbol de recorrido BFS para una búsqueda específica.
-     * @param grafo Grafo del tablero.
-     * @param camino ListaSimple de vértices en el camino de la palabra (en orden).
-     */
-    public void mostrarArbol(GrafoMatriz grafo, int[] padres, ListaSimple<Integer> camino) {
-        graph.clear();
+    private int[] construccionArbol(int raiz, GrafoMatriz grafo) {
+        int N = GrafoMatriz.N_VERTICES;
+        boolean[] visited = new boolean[N];
+        int[] padresTree = new int[N];
+        // inicializar padresTree a -1
+        for (int i = 0; i < N; i++) {
+            padresTree[i] = -1;
+        }
 
-        // Caso especial: camino vacío
+        // cola propia
+        Cola<Integer> q = new Cola<>();
+        visited[raiz] = true;
+        q.encolar(raiz);
+
+        while (!q.esVacia()) {
+            int u = q.desencolarDato();
+            for (int v = 0; v < N; v++) {
+                if (!visited[v] && grafo.getMatrizAdyacencia()[u][v]) {
+                    visited[v]    = true;
+                    padresTree[v] = u;
+                    q.encolar(v);
+                }
+            }
+        }
+        return padresTree;
+    }
+
+    public void mostrarArbolCompleto(GrafoMatriz grafo, ListaSimple<Integer> camino) {
         if (camino.esVacia()) {
-            JOptionPane.showMessageDialog(null, "Camino vacío - no hay recorrido para mostrar");
+            JOptionPane.showMessageDialog(
+                null,
+                "No hay recorrido para mostrar.",
+                "Aviso",
+                JOptionPane.INFORMATION_MESSAGE
+            );
             return;
         }
 
-        // Configuración inicial
-        ListaSimple<String> nodeIds = new ListaSimple<>();
-        int posX = 0;
-        NodoSimple<Integer> nodoActual = camino.getFirst();
-        String prevNodeId = null;
+        //raíz de la búsqueda
+        int raiz = (Integer) camino.getFirst().getDato();
 
-        // Construir nodos y conexiones
-        while (nodoActual != null) {
-            int vertice = nodoActual.getDato();
-            char letra = grafo.getLetra(vertice);
-            String nodeId = "n" + vertice;
-            nodeIds.insertarAlFinal(nodeId);
+        //construcción del árbol completo
+        int[] padresTree = construccionArbol(raiz, grafo);
 
-            // Crear nodo en el grafo visual
-            org.graphstream.graph.Node node = graph.addNode(nodeId);
-            node.setAttribute("ui.label", String.valueOf(letra));
-            node.setAttribute("layout.frozen");
-            node.setAttribute("xy", posX++, 0);  // Posición horizontal
+        //limpiar arbol y reaplicar estilo
+        graph.clear();
+        graph.setAttribute("ui.stylesheet", stylesheet);
 
-            // Conectar con nodo anterior (si existe)
-            if (prevNodeId != null) {
-                graph.addEdge("e" + prevNodeId + "-" + nodeId, prevNodeId, nodeId);
+        int N = GrafoMatriz.N_VERTICES;
+        //nodos alcanzados
+        for (int i = 0; i < N; i++) {
+            if (i == raiz || padresTree[i] != -1) {
+                Node n = graph.addNode("n" + i);
+                n.setAttribute("ui.label", "" + grafo.getLetra(i));
             }
-            prevNodeId = nodeId;
-            nodoActual = nodoActual.getNext();
+        }
+        //adicion aristas padre→hijo
+        for (int i = 0; i < N; i++) {
+            int p = padresTree[i];
+            if (p != -1) {
+                graph.addEdge("e" + p + "-" + i, "n" + p, "n" + i, true);
+            }
         }
 
-        // Mostrar el visualizador
+        //calculo vel[] para cada nodo con BFS sobre padresTree
+        int[] nivel = new int[N];
+        for (int i = 0; i < N; i++) {
+            nivel[i] = -1;
+        }
+        nivel[raiz] = 0;
+        Cola<Integer> cola2 = new Cola<>();
+        cola2.encolar(raiz);
+        while (!cola2.esVacia()) {
+            int u = cola2.desencolarDato();
+            for (int v = 0; v < N; v++) {
+                if (padresTree[v] == u) {
+                    nivel[v] = nivel[u] + 1;
+                    cola2.encolar(v);
+                }
+            }
+        }
+
+        //determinacion nivel máximo
+        int maxNivel = 0;
+        for (int l : nivel) {
+            if (l > maxNivel) {
+                maxNivel = l;
+            }
+        }
+
+        //agrupacion nodos
+        ListaSimple<Integer>[] nodosPorNivel = new ListaSimple[maxNivel + 1];
+        for (int i = 0; i <= maxNivel; i++) {
+            nodosPorNivel[i] = new ListaSimple<>();
+        }
+        for (int v = 0; v < N; v++) {
+            if (nivel[v] >= 0) {
+                nodosPorNivel[nivel[v]].insertarAlFinal(v);
+            }
+        }
+
+        // Layout manual: fijar posición según nivel y orden en la fila
+        int gapX = 40, gapY = 70;
+        for (int lvl = 0; lvl <= maxNivel; lvl++) {
+            //contar cuántos en este nivel
+            int count = 0;
+            NodoSimple<Integer> aux = nodosPorNivel[lvl].getFirst();
+            while (aux != null) {
+                count++;
+                aux = aux.getNext();
+            }
+            //asigna posiciones
+            aux = nodosPorNivel[lvl].getFirst();
+            int idx = 0;
+            while (aux != null) {
+                int v = aux.getDato();
+                double x = (idx - (count - 1) / 2.0) * gapX;
+                double y = -lvl * gapY;
+                Node n = graph.getNode("n" + v);
+                n.setAttribute("xy", x, y);
+                n.setAttribute("layout.frozen", true);
+                aux = aux.getNext();
+                idx++;
+            }
+        }
+
+        //Resalta rama palabra
+        Integer prev = null;
+        NodoSimple<Integer> cur = camino.getFirst();
+        while (cur != null) {
+            int v = cur.getDato();
+            graph.getNode("n" + v).setAttribute("ui.class", "highlight");
+            if (prev != null) {
+                Edge e = graph.getEdge("e" + prev + "-" + v);
+                if (e != null) {
+                    e.setAttribute("ui.class", "path");
+                }
+            }
+            prev = v;
+            cur = cur.getNext();
+        }
+
+        //Mostrar grafo
         Viewer viewer = graph.display();
         viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
     }

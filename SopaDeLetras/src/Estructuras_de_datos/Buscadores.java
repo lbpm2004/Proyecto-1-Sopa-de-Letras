@@ -13,14 +13,14 @@ public class Buscadores {
     private int filaRecorrido;
     private int columnaRecorrido;
     private int[] padresBFS;
-
+  
     public Buscadores() {
         this.filaRecorrido = 0;
         this.columnaRecorrido = 0;
         this.padresBFS=null;
-        
+
     }
-    
+  
     public void iniciarBusqueda(){
         filaRecorrido=0;
         columnaRecorrido=0;
@@ -193,7 +193,7 @@ public class Buscadores {
             boolean[] visitados = new boolean[GrafoMatriz.N_VERTICES];
             int[] padres = new int[GrafoMatriz.N_VERTICES];
             int[] nivel = new int[GrafoMatriz.N_VERTICES];
-            
+   
             for (int i = 0; i < padres.length; i++) {
                 padres[i]=-1;
                 nivel[i]=-1;
@@ -203,8 +203,7 @@ public class Buscadores {
             cola.encolar(verticeInicial);
             visitados[verticeInicial] = true;
             nivel[verticeInicial]=0;
-            
-            boolean encontrada=false;
+           
             int fin=-1;
         
    
@@ -212,24 +211,25 @@ public class Buscadores {
                 int actual = cola.desencolarDato();
                 if (grafo.getLetra(actual)==palabra.charAt(nivel[actual])){
                     if (nivel[actual] == palabra.length() - 1) {
-                        encontrada = true;
                         fin = actual;
-                        break;
                     }
                 }
+                
+                if (nivel[actual] < palabra.length() - 1) {
 
-                for (int vecino = 0; vecino < GrafoMatriz.N_VERTICES; vecino++) {
-                    if (grafo.getMatrizAdyacencia()[actual][vecino] && !visitados[vecino]) {
-                        if (grafo.getLetra(vecino) == palabra.charAt(nivel[actual] + 1)) {
-                            visitados[vecino]=true;
-                            cola.encolar(vecino);
-                            padres[vecino]=actual;
-                            nivel[vecino] = nivel[actual] + 1;
+                    for (int vecino = 0; vecino < GrafoMatriz.N_VERTICES; vecino++) {
+                        if (grafo.getMatrizAdyacencia()[actual][vecino] && !visitados[vecino]) {
+                            if (grafo.getLetra(vecino) == palabra.charAt(nivel[actual] + 1)) {
+                                visitados[vecino]=true;
+                                cola.encolar(vecino);
+                                padres[vecino]=actual;
+                                nivel[vecino] = nivel[actual] + 1;
+                            }
                         }
                     }
                 }
             }
-            if (encontrada) {
+            if (fin != -1) {
                 padresBFS=padres;
                 return reconstruirCamino(padres, verticeInicial, fin);
             }else{
