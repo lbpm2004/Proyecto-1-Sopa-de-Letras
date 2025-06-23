@@ -108,7 +108,6 @@ public class Buscadores {
      * @param inicio Vértice inicial para la búsqueda
      * @param palabraObjetivo Palabra a buscar
      * @param grafo Grafo que representa el tablero
-     * @param visitados Array de vértices visitados
      * @return true si la palabra se encuentra a partir de este vértice
      */
     private boolean BFS(int inicio, String palabraObjetivo, GrafoMatriz grafo) {
@@ -311,14 +310,12 @@ public class Buscadores {
     private ListaSimple<Integer> reconstruirCamino(int[] padres, int inicio, int fin) {
         Pila<Integer> pila = new Pila<>(); 
 
-        // Reconstruir de fin a inicio
         int actual = fin;
         while (actual != -1) {
             pila.apilar(actual);
             actual = padres[actual];
         }
-
-        // desapilar para obtener inicio->fin
+        
         ListaSimple<Integer> camino = new ListaSimple<>();
         while (!pila.esVacia()) {
             camino.insertarAlFinal(pila.desapilar());

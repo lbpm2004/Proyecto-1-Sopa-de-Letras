@@ -597,7 +597,12 @@ public class Interfaz1 extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error:" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }   
     }//GEN-LAST:event_cargarActionPerformed
-
+    
+    /**
+    * Guarda el diccionario actual en un archivo de texto seleccionado por el usuario.
+    * 
+    * @param evt Evento de acción del botón.
+    */
     private void guardarPalabraDiccionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarPalabraDiccionarioActionPerformed
         // TODO add your handling code here:
         try {

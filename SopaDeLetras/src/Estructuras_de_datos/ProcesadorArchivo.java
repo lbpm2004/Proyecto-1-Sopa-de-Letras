@@ -254,8 +254,7 @@ public class ProcesadorArchivo {
             for (int j = 0; j < tableroLetras.length; j++) {
                 tableroLetras[i][j]=letrasArchivo[identificador].toUpperCase().charAt(0);
                 identificador++;
-            }
-            
+            }  
         }
     }
     
@@ -290,7 +289,11 @@ public class ProcesadorArchivo {
         return true;
     }
     
-    //falta javadoc!!!
+    /**
+    * Guarda el diccionario actual y el tablero en un archivo de texto.
+    * 
+    * @param archivoSeleccionado Archivo destino donde se escribirá el contenido.
+    */
     public void guardarDiccionario(File archivoSeleccionado){
         try{
             if (diccionario ==null || diccionario.esVacia()) {
@@ -306,7 +309,7 @@ public class ProcesadorArchivo {
             }
             pw.println("/dic");
             pw.println("tab");
-            pw.println(String.join(",", letrasArchivo)); // Usar el string original
+            pw.println(String.join(",", letrasArchivo));
             pw.println("/tab");
             pw.close();
             JOptionPane.showMessageDialog(null, "Diccionario guardado exitosamente.");
@@ -329,7 +332,6 @@ public class ProcesadorArchivo {
         return diccionario;
     }
 
-    
     public char[][] getTableroLetras() {
         return tableroLetras;
     }

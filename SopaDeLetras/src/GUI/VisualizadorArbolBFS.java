@@ -115,25 +115,25 @@ public class VisualizadorArbolBFS {
             return;
         }
 
-        //raíz de la búsqueda
+        //Raíz de la búsqueda
         int raiz = (Integer) camino.getFirst().getDato();
    
-        //construcción del árbol completo
+        //Construcción del árbol completo
         int[] padresTree = construccionArbol(raiz, grafo);
 
-        //limpiar arbol y reaplicar estilo
+        //Limpiar arbol y reaplicar estilo
         graph.clear();
         graph.setAttribute("ui.stylesheet", stylesheet);
 
         int N = GrafoMatriz.N_VERTICES;
-        //nodos alcanzados
+        //Nodos alcanzados
         for (int i = 0; i < N; i++) {
             if (i == raiz || padresTree[i] != -1) {
                 Node n = graph.addNode("n" + i);
                 n.setAttribute("ui.label", "" + grafo.getLetra(i));
             }
         }
-        //adicion aristas padre→hijo
+        //Adición aristas padre-hijo
         for (int i = 0; i < N; i++) {
             int p = padresTree[i];
             if (p != -1) {
@@ -141,7 +141,7 @@ public class VisualizadorArbolBFS {
             }
         }
 
-        //calculo vel[] para cada nodo con BFS sobre padresTree
+        //Calculo vel[] para cada nodo con BFS sobre padresTree
         int[] nivel = new int[N];
         for (int i = 0; i < N; i++) {
             nivel[i] = -1;
@@ -159,7 +159,7 @@ public class VisualizadorArbolBFS {
             }
         }
 
-        //determinacion nivel máximo
+        //Determinacion de nivel máximo
         int maxNivel = 0;
         for (int l : nivel) {
             if (l > maxNivel) {
@@ -167,7 +167,7 @@ public class VisualizadorArbolBFS {
             }
         }
 
-        //agrupacion nodos
+        //Agrupación de nodos
         ListaSimple<Integer>[] nodosPorNivel = new ListaSimple[maxNivel + 1];
         for (int i = 0; i <= maxNivel; i++) {
             nodosPorNivel[i] = new ListaSimple<>();
@@ -181,14 +181,14 @@ public class VisualizadorArbolBFS {
         // Layout manual: fijar posición según nivel y orden en la fila
         int gapX = 40, gapY = 70;
         for (int lvl = 0; lvl <= maxNivel; lvl++) {
-            //contar cuántos en este nivel
+            //Contador de niveles
             int count = 0;
             NodoSimple<Integer> aux = nodosPorNivel[lvl].getFirst();
             while (aux != null) {
                 count++;
                 aux = aux.getNext();
             }
-            //asigna posiciones
+            //Asigna posiciones
             aux = nodosPorNivel[lvl].getFirst();
             int idx = 0;
             while (aux != null) {
