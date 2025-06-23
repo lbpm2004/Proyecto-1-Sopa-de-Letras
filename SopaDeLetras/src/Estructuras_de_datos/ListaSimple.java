@@ -77,7 +77,14 @@ public class ListaSimple<T> {
         }
         return cadena;
     } 
-    // FALTA JAVADOC!!!
+    
+    /**
+    * Verifica si un elemento específico existe en la lista.
+    * La comparación se realiza usando el método equals() del elemento.
+    * 
+    * @param dato Elemento a buscar en la lista
+    * @return true si el elemento se encuentra en la lista, false en caso contrario.
+    */
     public boolean contieneDato(T dato) {
         NodoSimple actual=first;
     
@@ -93,7 +100,6 @@ public class ListaSimple<T> {
 
     /**
      * Getters y Setters 
-     * @return 
      */
     public NodoSimple getFirst() {
         return first;

@@ -326,8 +326,9 @@ public class ProcesadorArchivo {
         indiceDicFin = -1;
     }
     
-    //Getters
-    
+    /**
+     * Getters
+     */
     public ListaSimple getDiccionario() {
         return diccionario;
     }

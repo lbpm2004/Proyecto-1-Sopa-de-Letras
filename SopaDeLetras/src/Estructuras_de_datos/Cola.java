@@ -5,10 +5,12 @@
 package Estructuras_de_datos;
 
 /**
- * Implementación de una cola genérica basada en nodos enlazados.
- *
+ * Implementación de una estructura de datos Cola (FIFO).
+ * Permite las operaciones básicas de encolar, desencolar y verificación de estado.
+ * 
+ * @param <T> Tipo genérico de los elementos almacenados en la cola
  * @author Diego Linares
- * @colaborator Luis Peña
+ * @contributor Luis Peña
  */
 public class Cola<T> {
     private NodoSimple<T> front;
@@ -16,7 +18,7 @@ public class Cola<T> {
     private int tamaño;
 
     /**
-     * Crea una cola vacía.
+     * Constructor que inicializa una cola vacía.
      */
     public Cola() {
         this.front = null;
@@ -27,14 +29,15 @@ public class Cola<T> {
     /**
      * Comprueba si la cola se encuentra vacia
      * 
-     * @return true si la cola está vacía, false en caso contrario.
+     * @return true si la cola no contiene elementos, false en caso contrario
      */
     public boolean esVacia(){
         return front == null;
     }
     
     /**
-     * Elimina todos los elementos de una cola
+     * Elimina todos los elementos de una cola, dejandola vacia.
+     * 
      */
     public void vaciar(){
         front=null;
@@ -60,8 +63,8 @@ public class Cola<T> {
     
     /**
      * Elimina el elemento al frente de la cola.
-     * 
-     * @throws IllegalStateException si la cola está vacía.
+     *      
+     * @throws IllegalStateException si se intenta desencolar de una cola vacía
      */
     public void desencolar() {
         if(esVacia()) {
@@ -75,9 +78,9 @@ public class Cola<T> {
     }
     
     /**
-     * Desencola el elemento al frente de la cola.
+     * Elimina y devuelve el elemento del frente de la cola.
      * 
-     * @return El dato desencolado, o nulo si la cola esta vacía.
+     * @return Elemento removido del frente, o null si la cola está vacía
      */
     public T desencolarDato() {
         if (this.esVacia()) {
@@ -94,9 +97,11 @@ public class Cola<T> {
     }
     
     /**
-     * Recorre la cola a fin de mostrar sus elementos.
+     * Genera una representación en cadena de todos los elementos de la cola.
+     * Los elementos se muestran en orden desde el frente hasta el final,
+     * cada uno en una línea separada.
      * 
-     * @return Cadena con los elementos de la cola.
+     * @return Cadena con los elementos de la cola separados por saltos de línea
      */
     public String mostrarCola(){
         String cadena="";
@@ -109,8 +114,9 @@ public class Cola<T> {
         return cadena;
     } 
 
-    //Getters y setters
-    
+    /**
+     * Getters y Setters
+     */
     public NodoSimple getFront() {
         return front;
     }

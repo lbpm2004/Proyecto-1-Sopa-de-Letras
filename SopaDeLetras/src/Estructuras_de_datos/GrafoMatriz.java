@@ -51,49 +51,49 @@ public class GrafoMatriz {
             for (int columna = 0; columna < N_COLUMNAS; columna++) {
                 int origen = fila * N_COLUMNAS + columna;
                 
-                //arriba               
+                //Arriba               
                 if (fila > 0) {
                     int destino = (fila-1)*N_COLUMNAS+columna;
                     agregarArista (origen, destino);
                 }
                 
-                //abajo
+                //Abajo
                 if (fila < N_FILAS-1){
                     int destino=(fila+1)*N_COLUMNAS+columna;
                     agregarArista (origen, destino);
                 }
                 
-                //izquierda
+                //Izquierda
                 if (columna>0){
                     int destino = fila*N_COLUMNAS+(columna-1);
                     agregarArista (origen, destino);
                 }
                 
-                //derecha
+                //Derecha
                 if (columna<N_COLUMNAS-1){
                     int destino= fila*N_COLUMNAS+(columna+1);
                     agregarArista (origen, destino);
                 }
                 
-                //diagonal arriba-izq
+                //Diagonal arriba-izq
                 if (fila>0 && columna>0){
                     int destino= (fila-1)*N_COLUMNAS+(columna-1);
                     agregarArista (origen, destino);
                 }
                 
-                //diagonal arriba-der
+                //Diagonal arriba-der
                 if (fila>0 && columna<N_COLUMNAS-1){
                     int destino= (fila-1)*N_COLUMNAS+(columna+1);
                     agregarArista (origen, destino);
                 }
                 
-                //diagonal abajo -izq
+                //Diagonal abajo -izq
                 if (fila<N_FILAS-1 && columna>0){
                     int destino= (fila+1)*N_COLUMNAS+(columna-1);
                     agregarArista (origen, destino);
                 }
                 
-                // diagonal abajo-der
+                //Diagonal abajo-der
                 if (fila<N_FILAS-1 && columna<N_COLUMNAS-1){
                     int destino= (fila+1)*N_COLUMNAS+(columna+1);
                     agregarArista (origen, destino);

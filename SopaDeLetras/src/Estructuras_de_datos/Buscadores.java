@@ -178,7 +178,7 @@ public class Buscadores {
             while ((verticeInicial = establecerVerticeInicial(grafo, palabra)) != -1) {
                 boolean[] visitados = new boolean[GrafoMatriz.N_VERTICES];
                     
-                if (DFS(1, verticeInicial, grafo, palabra, visitados)) { //pendiente aqu
+                if (DFS(1, verticeInicial, grafo, palabra, visitados)) {
                     boolean palabraEncontrada = false;
                     NodoSimple<String> nodoResultado = encontradas.getFirst();
                     while(nodoResultado != null) {
