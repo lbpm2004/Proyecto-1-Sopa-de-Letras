@@ -117,7 +117,7 @@ public class VisualizadorArbolBFS {
 
         //raíz de la búsqueda
         int raiz = (Integer) camino.getFirst().getDato();
-
+   
         //construcción del árbol completo
         int[] padresTree = construccionArbol(raiz, grafo);
 

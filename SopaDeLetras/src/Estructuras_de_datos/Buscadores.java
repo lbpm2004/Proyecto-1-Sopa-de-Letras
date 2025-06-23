@@ -111,20 +111,25 @@ public class Buscadores {
      * @param visitados Array de vértices visitados
      * @return true si la palabra se encuentra a partir de este vértice
      */
-    private boolean BFS(int inicio, String palabraObjetivo, GrafoMatriz grafo, boolean[] visitados) {
+    private boolean BFS(int inicio, String palabraObjetivo, GrafoMatriz grafo) {
         Cola<Integer> q = new Cola<>(); //guarda los vertices
         Cola<String> colaQ = new Cola<>(); //guarda el camino
+        Cola<boolean[]> colaVisitados = new Cola<>();
       
+        boolean[] inicial = new boolean[GrafoMatriz.N_VERTICES];
+        inicial[inicio] = true;
         q.encolar(inicio);
         colaQ.encolar(Character.toString(grafo.getLetra(inicio)));
-
+        colaVisitados.encolar(inicial);
+        
         while (!q.esVacia()) {
             int verticeActual = (Integer) q.getFront().getDato();
             String camino = (String) colaQ.getFront().getDato();
+            boolean[] vis = (boolean[]) colaVisitados.getFront().getDato();
             
             q.desencolar();
             colaQ.desencolar();
-            visitados[verticeActual] = true;
+            colaVisitados.desencolar();
             
             if (camino.equals(palabraObjetivo)) {
                 return true;
@@ -135,14 +140,20 @@ public class Buscadores {
             }
 
             for (int vecino = 0; vecino < GrafoMatriz.N_VERTICES; vecino++) {
-                if (grafo.getMatrizAdyacencia()[verticeActual][vecino] && !visitados[vecino]) { 
+                if (grafo.getMatrizAdyacencia()[verticeActual][vecino] && !vis[vecino]) { 
                     char letraVecino = grafo.getLetra(vecino); 
                     
-                    if (camino.length() < palabraObjetivo.length() && letraVecino == palabraObjetivo.charAt(camino.length())) {
+                    if (letraVecino == palabraObjetivo.charAt(camino.length())) {
                         String newPath = camino + letraVecino;
-                        
+                        boolean[] copia = new boolean[GrafoMatriz.N_VERTICES];
+                        for (int i = 0; i < copia.length; i++) {
+                            copia[i] = vis[i];
+                        }
+                        copia[vecino] = true;
+
                         q.encolar(vecino);
                         colaQ.encolar(newPath);
+                        colaVisitados.encolar(copia);
                     }
                 }
             }
@@ -198,31 +209,30 @@ public class Buscadores {
      */
     public ListaSimple<String> buscarTodasBFS(GrafoMatriz grafo, ListaSimple diccionario) {
         ListaSimple<String> encontradas = new ListaSimple<>();
+
         NodoSimple<String> aux = diccionario.getFirst();
-        iniciarBusqueda();
         
         while (aux != null) {
             String palabra = aux.getDato();
-            int verticeInicial;
-            
-            while ((verticeInicial = establecerVerticeInicial(grafo, palabra)) != -1) {
-                boolean[] visitados = new boolean[GrafoMatriz.N_VERTICES];
 
-                if (BFS(verticeInicial, palabra, grafo, visitados)) {
-                    boolean palabraEncontrada = false;
-                    NodoSimple<String> nodoResultado = encontradas.getFirst();
-                    while(nodoResultado != null) {
-                        if (nodoResultado.getDato().equals(palabra)) {
-                            palabraEncontrada = true;
-                            break;
+            for (int i = 0; i < GrafoMatriz.N_VERTICES; i++) {
+                if (grafo.getLetra(i) == palabra.charAt(0)) {
+                    if (BFS(i, palabra, grafo)) {
+                        boolean palabraEncontrada = false;
+                        NodoSimple<String> nodoResultado = encontradas.getFirst();
+                        while(nodoResultado != null) {
+                            if (nodoResultado.getDato().equals(palabra)) {
+                                palabraEncontrada = true;
+                                break;
+                            }
+                            nodoResultado = nodoResultado.getNext();
                         }
-                        nodoResultado = nodoResultado.getNext();
-                    }
                         
-                    if (!palabraEncontrada) {
-                        encontradas.insertarAlFinal(palabra);
+                        if (!palabraEncontrada) {
+                            encontradas.insertarAlFinal(palabra);
+                        }
+                        break; 
                     }
-                    break; 
                 }
             }
             aux = aux.getNext();
@@ -237,25 +247,25 @@ public class Buscadores {
      * @param grafo Grafo que representa el tablero
      * @return Lista de vértices que forman el camino de la palabra
      */
-    public ListaSimple<Integer> BFSConCamino(String palabra, GrafoMatriz grafo) {
-        iniciarBusqueda();
+   public ListaSimple<Integer> BFSConCamino(String palabra, GrafoMatriz grafo) {
+    iniciarBusqueda();
         int verticeInicial=establecerVerticeInicial(grafo, palabra);
-    
+
         while (verticeInicial != -1) {
             boolean[] visitados = new boolean[GrafoMatriz.N_VERTICES];
             int[] padres = new int[GrafoMatriz.N_VERTICES];
             int[] nivel = new int[GrafoMatriz.N_VERTICES];
-   
+
             for (int i = 0; i < padres.length; i++) {
                 padres[i]=-1;
                 nivel[i]=-1;
             }
-        
+
             Cola<Integer> cola = new Cola<>();
             cola.encolar(verticeInicial);
             visitados[verticeInicial] = true;
             nivel[verticeInicial]=0;
-           
+
             int fin=-1;
         
    
@@ -264,11 +274,10 @@ public class Buscadores {
                 if (grafo.getLetra(actual)==palabra.charAt(nivel[actual])){
                     if (nivel[actual] == palabra.length() - 1) {
                         fin = actual;
-                    }
+                    }               
                 }
-                
-                if (nivel[actual] < palabra.length() - 1) {
 
+                if (nivel[actual] < palabra.length() - 1) {
                     for (int vecino = 0; vecino < GrafoMatriz.N_VERTICES; vecino++) {
                         if (grafo.getMatrizAdyacencia()[actual][vecino] && !visitados[vecino]) {
                             if (grafo.getLetra(vecino) == palabra.charAt(nivel[actual] + 1)) {
@@ -287,7 +296,7 @@ public class Buscadores {
             }else{
                 verticeInicial = establecerVerticeInicial(grafo, palabra);  
             }
-        }
+        }   
         return new ListaSimple<>();
     }
 

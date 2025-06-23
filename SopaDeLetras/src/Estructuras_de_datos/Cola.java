@@ -5,6 +5,7 @@
 package Estructuras_de_datos;
 
 /**
+ * Implementación de una cola genérica basada en nodos enlazados.
  *
  * @author Diego Linares
  * @colaborator Luis Peña

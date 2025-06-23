@@ -158,29 +158,30 @@ public class Interfaz1 extends javax.swing.JFrame {
         Jlabel30 = new javax.swing.JLabel();
         Jlabel31 = new javax.swing.JLabel();
         Jlabel32 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
-        jSeparator3 = new javax.swing.JSeparator();
-        jSeparator6 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
         jSeparator8 = new javax.swing.JSeparator();
-        jSeparator4 = new javax.swing.JSeparator();
+        jLabel8 = new javax.swing.JLabel();
+        jSeparator5 = new javax.swing.JSeparator();
+        jSeparator7 = new javax.swing.JSeparator();
+        jSeparator6 = new javax.swing.JSeparator();
+        jSeparator9 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         getContentPane().setLayout(null);
 
-        titulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        titulo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titulo.setText("SOPA DE LETRAS");
         getContentPane().add(titulo);
         titulo.setBounds(420, 10, 220, 40);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 2, 16)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Presione el botón para cargar un diccionario y generar el tablero:");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(100, 60, 580, 40);
+        jLabel1.setBounds(110, 60, 580, 40);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -202,7 +203,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         getContentPane().add(jLabel3);
         jLabel3.setBounds(760, 120, 80, 20);
 
-        cargar.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        cargar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cargar.setText("Cargar archivo");
         cargar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -210,13 +211,13 @@ public class Interfaz1 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(cargar);
-        cargar.setBounds(670, 70, 160, 30);
+        cargar.setBounds(680, 70, 160, 23);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 2, 16)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Seleccione el método de búsqueda preferido y presione el botón para buscar palabras del diccionario");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(50, 390, 940, 30);
+        jLabel4.setBounds(50, 400, 940, 30);
 
         busquedaGeneral.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         busquedaGeneral.setText("Búsqueda General");
@@ -244,19 +245,19 @@ public class Interfaz1 extends javax.swing.JFrame {
         jScrollPane2.setViewportView(verPalabrasEncontradas);
 
         getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(60, 510, 410, 140);
+        jScrollPane2.setBounds(60, 500, 410, 140);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("El tiempo total de búsqueda fue de X segundos");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(490, 560, 500, 20);
+        jLabel5.setBounds(490, 550, 500, 20);
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel6.setText("Rellene el campo vacío con la palabra que desea buscar en el tablero");
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 2, 16)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Rellene el campo vacío con la palabra que desea buscar en el tablero:");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(270, 670, 550, 20);
+        jLabel6.setBounds(50, 670, 950, 20);
 
         palabraIngresada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -264,7 +265,7 @@ public class Interfaz1 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(palabraIngresada);
-        palabraIngresada.setBounds(260, 710, 290, 40);
+        palabraIngresada.setBounds(270, 700, 290, 40);
 
         busquedaEspecifica.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         busquedaEspecifica.setText("Búsqueda Específica");
@@ -274,9 +275,9 @@ public class Interfaz1 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(busquedaEspecifica);
-        busquedaEspecifica.setBounds(560, 710, 180, 40);
+        busquedaEspecifica.setBounds(570, 700, 180, 40);
 
-        guardarPalabraDiccionario.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        guardarPalabraDiccionario.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         guardarPalabraDiccionario.setText("Guardar Diccionario");
         guardarPalabraDiccionario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,9 +285,9 @@ public class Interfaz1 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(guardarPalabraDiccionario);
-        guardarPalabraDiccionario.setBounds(90, 810, 190, 40);
+        guardarPalabraDiccionario.setBounds(270, 800, 190, 30);
 
-        reiniciar.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        reiniciar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         reiniciar.setText("Reiniciar");
         reiniciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -294,7 +295,7 @@ public class Interfaz1 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(reiniciar);
-        reiniciar.setBounds(790, 810, 180, 40);
+        reiniciar.setBounds(590, 800, 180, 30);
 
         Jlabel03.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         Jlabel03.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -391,24 +392,45 @@ public class Interfaz1 extends javax.swing.JFrame {
         Jlabel32.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
         getContentPane().add(Jlabel32);
         Jlabel32.setBounds(810, 330, 80, 50);
-        getContentPane().add(jSeparator1);
-        jSeparator1.setBounds(50, 780, 950, 10);
+
+        jSeparator2.setBackground(new java.awt.Color(204, 0, 0));
+        jSeparator2.setForeground(new java.awt.Color(204, 0, 0));
         getContentPane().add(jSeparator2);
         jSeparator2.setBounds(40, 57, 950, 10);
-        getContentPane().add(jSeparator3);
-        jSeparator3.setBounds(40, 110, 950, 10);
-        getContentPane().add(jSeparator6);
-        jSeparator6.setBounds(40, 390, 950, 30);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Palabras encontradas");
+        jLabel7.setText("Otras opciones:");
         getContentPane().add(jLabel7);
-        jLabel7.setBounds(160, 480, 220, 20);
+        jLabel7.setBounds(50, 770, 950, 20);
         getContentPane().add(jSeparator8);
-        jSeparator8.setBounds(80, 540, 350, 10);
-        getContentPane().add(jSeparator4);
-        jSeparator4.setBounds(40, 660, 950, 10);
+        jSeparator8.setBounds(80, 530, 350, 10);
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("Palabras encontradas");
+        getContentPane().add(jLabel8);
+        jLabel8.setBounds(160, 470, 220, 20);
+
+        jSeparator5.setBackground(new java.awt.Color(204, 0, 0));
+        jSeparator5.setForeground(new java.awt.Color(204, 0, 0));
+        getContentPane().add(jSeparator5);
+        jSeparator5.setBounds(50, 660, 950, 10);
+
+        jSeparator7.setBackground(new java.awt.Color(204, 0, 0));
+        jSeparator7.setForeground(new java.awt.Color(204, 0, 0));
+        getContentPane().add(jSeparator7);
+        jSeparator7.setBounds(40, 103, 950, 10);
+
+        jSeparator6.setBackground(new java.awt.Color(204, 0, 0));
+        jSeparator6.setForeground(new java.awt.Color(204, 0, 0));
+        getContentPane().add(jSeparator6);
+        jSeparator6.setBounds(50, 390, 950, 10);
+
+        jSeparator9.setBackground(new java.awt.Color(204, 0, 0));
+        jSeparator9.setForeground(new java.awt.Color(204, 0, 0));
+        getContentPane().add(jSeparator9);
+        jSeparator9.setBounds(50, 760, 950, 10);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -543,6 +565,7 @@ public class Interfaz1 extends javax.swing.JFrame {
                 jLabel5.setText("El tiempo total de búsqueda fue de " + tiempo + " milisegundos.");
             }else {
                 JOptionPane.showMessageDialog(null, "Palabra no encontrada");
+                palabraIngresada.setText("");
         }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
@@ -661,14 +684,15 @@ public class Interfaz1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JSeparator jSeparator9;
     private javax.swing.JTextField palabraIngresada;
     private javax.swing.JButton reiniciar;
     private javax.swing.JLabel titulo;
